@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="612.0" prefWidth="416.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication7.FXMLDocumentController">
+   <children>
+      <Button fx:id="checkButton" layoutX="323.0" layoutY="512.0" mnemonicParsing="false" text="Check" />
+      <GridPane fx:id="gameGrid" layoutX="37.0" layoutY="22.0" prefHeight="417.0" prefWidth="247.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Circle fx:id="dropField" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="dropField1" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" />
+            <Circle fx:id="dropField2" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" />
+            <Circle fx:id="dropField3" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" />
+            <Circle fx:id="dropField4" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="1" />
+            <Circle fx:id="dropField5" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Circle fx:id="dropField6" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Circle fx:id="dropField7" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Circle fx:id="dropField8" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="2" />
+            <Circle fx:id="dropField9" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Circle fx:id="dropField10" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Circle fx:id="dropField11" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Circle fx:id="dropField12" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="3" />
+            <Circle fx:id="dropField13" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Circle fx:id="dropField14" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Circle fx:id="dropField15" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Circle fx:id="dropField16" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="4" />
+            <Circle fx:id="dropField17" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Circle fx:id="dropField18" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Circle fx:id="dropField19" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Circle fx:id="dropField20" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="5" />
+            <Circle fx:id="dropField21" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Circle fx:id="dropField22" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Circle fx:id="dropField23" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Circle fx:id="dropField24" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="6" />
+            <Circle fx:id="dropField25" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Circle fx:id="dropField26" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Circle fx:id="dropField27" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+            <Circle fx:id="dropField28" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="7" />
+            <Circle fx:id="dropField29" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Circle fx:id="dropField30" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <Circle fx:id="dropField31" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <Circle fx:id="dropField32" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="8" />
+            <Circle fx:id="dropField33" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Circle fx:id="dropField34" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+            <Circle fx:id="dropField35" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+            <Circle fx:id="dropField36" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="9" />
+            <Circle fx:id="dropField37" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Circle fx:id="dropField38" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+            <Circle fx:id="dropField39" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+            <Circle fx:id="dropField40" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="10" />
+            <Circle fx:id="dropField41" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <Circle fx:id="dropField42" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+            <Circle fx:id="dropField43" fill="WHITE" onDragDropped="#dropFieldOnDrop" onDragOver="#handleDropField" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+         </children>
+      </GridPane>
+      <FlowPane fx:id="colorCircles" layoutX="40.0" layoutY="469.0" prefHeight="111.0" prefWidth="224.0" />
+   </children>
+</AnchorPane>
