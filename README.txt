@@ -15,26 +15,28 @@ Kolla igenom den här tutorialen:
 ////////////////////////////////////////////////////////////////////////
 
 BUGGAR:
-	checkRow (som testar om ens gissning) har IndexOutOfBoundException
-		- försök lös det med så mycket for-each loopar som möjligt
-		- annars få koll på integersen!! 
-
+	
 
 
 
 Färger: 6 eller 8
 Hål: 4
 
-Eftersom alla rader kommer visas från början så får man styra det hela genom 		att tillåta / inte tillåta att man sätter på raden man försöker sätta 		en cirkel i
 
-Man ska generera 4 random cirklar som inte syns av användaren, dessa ska ha 		typ frågetecken på sig, sen när man gissat rätt eller spelet är slut 	så ska dom visa färgerna som datorn har genererat  
+Eftersom alla rader kommer visas från början så får man styra det hela genom 		att tillåta / inte tillåta att man sätter på raden man försöker sätta 		en cirkel i
 
 Det ska finnas två views, en som är om man vill LOAD:a ett tidigare spel, 	kolla på HIGHSCORE:n
 
-Använd 3D objekt, typ sphere och dyl.
+
 
 Enum klass för alla dom olika färgade blupparna, eller ås kan man man använda
-	Colors.ENUM, men om man vill ha egna färger så får man göra en egen 	ENUM klass med alla RGB värden
+	Colors.ENUM, men om man vill ha egna färger så får man göra en egen 		ENUM klass med alla RGB värden
+
+
+EVENTUELLT: 
+	Använd 3D objekt, typ sphere och dyl.
+
+
 
 
 

@@ -6,14 +6,21 @@
 package javafxapplication7;
 
 import java.net.URL;
+import java.sql.Date;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -24,12 +31,14 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Text;
 import javafxapplication7.ColorList;
@@ -43,6 +52,9 @@ public class FXMLDocumentController implements Initializable {
     //private ArrayList<Color> colorList = new ArrayList<>();
     private int roundCount = 43; // ELLER VAD DET NU ÄR SOM ÄR LÄNGST NER
     private ArrayList<Color> computerGenRow = new ArrayList<>();
+    private Deque<FlowPane> round = new ArrayDeque<FlowPane>();
+    private Deque<Polygon> pointers = new ArrayDeque<Polygon>();
+    private ArrayList<Date> playTime = new ArrayList<>();
     
     private Label label;
     @FXML
@@ -142,6 +154,57 @@ public class FXMLDocumentController implements Initializable {
     private GridPane gameGrid;
     @FXML
     private FlowPane colorCircles;
+
+    @FXML
+    private FlowPane roundOne;
+    @FXML
+    private FlowPane roundTwo;
+    @FXML
+    private FlowPane roundThree;
+    @FXML
+    private FlowPane roundFour;
+    @FXML
+    private FlowPane roundSix;
+    @FXML
+    private FlowPane roundFive;
+    @FXML
+    private FlowPane roundSeven;
+    @FXML
+    private FlowPane roundEight;
+    @FXML
+    private FlowPane roundTen;
+    @FXML
+    private FlowPane roundNine;
+    @FXML
+    private Text questionMark1;
+    @FXML
+    private Text questionMark2;
+    @FXML
+    private Text questionMark3;
+    @FXML
+    private Text questionMark4;
+    @FXML
+    private AnchorPane backGround;
+    @FXML
+    private Polygon pointerOne;
+    @FXML
+    private Polygon pointerTwo;
+    @FXML
+    private Polygon pointerThree;
+    @FXML
+    private Polygon pointerFour;
+    @FXML
+    private Polygon pointerTen;
+    @FXML
+    private Polygon pointerNine;
+    @FXML
+    private Polygon pointerEight;
+    @FXML
+    private Polygon pointerSeven;
+    @FXML
+    private Polygon pointerSix;
+    @FXML
+    private Polygon pointerFive;
     
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
@@ -156,7 +219,7 @@ public class FXMLDocumentController implements Initializable {
         
         for(Color currColor: colors){
             
-            colorCircles.getChildren().add(new Circle(20, currColor));
+            colorCircles.getChildren().add(new Circle(25, currColor));
             //colorCircles.getChildren().get(index).setId("colorCircle");
             System.out.println("genColorCircles runda:" + index);
             index++;
@@ -192,23 +255,13 @@ public class FXMLDocumentController implements Initializable {
     
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private boolean checkRow(ArrayList<Circle> circleList, ArrayList<Color> computerColorList){
+        
+        Collections.reverse(circleList);
         
         ArrayList<Color> copyOfCompColList = new ArrayList<>(computerColorList);
         
+        // TODO: man kan inte remove:a från en array man itererar över, man får set:a eller ändra
         
         // ALLT BLIR SPEGELVÄNT EFTERSOM MAN ITERERAR BAKLÄNGES GENOM GameGrid ELEMENTEN!
         
@@ -218,28 +271,21 @@ public class FXMLDocumentController implements Initializable {
         // ARRAYINDEX OUT OF BOUND EXCEPTION!!!!!!!!
         // lösning, glöm inte continue när man removat! sizen minskar för varje remove
         
-        // det måste ivarjefall MAPPAS!! man måste veta index annars går det inte att skilja på alla eventuella dubletter
-        
         // DEN FÖRBRUKAR LIKSOM COLORSLIST!
+
+        ArrayList <Circle> checkArray = new ArrayList<>();
+        
+        if(circleList.isEmpty()){
+            return false;
+        } else if (copyOfCompColList.isEmpty()){
+            return false;
+        }
         
         boolean check = true;
         
-        ArrayList <Circle> checkArray = new ArrayList<>();
-
-        // eftersom man läser GameGrid baklänges så får man arrayn av circlar i "omvänd" ordning
-        // därför får den reversas innan man jämför den mot färg arrayn
-        
-        Collections.reverse(circleList);
-        
-        // ta helt bort alla integers... bättre att bara köra på enhanced for
-        
-        if(circleList.isEmpty()){
-            System.out.println("circleList is empty");
-            return false;
-        } else if (copyOfCompColList.isEmpty()){
-            System.out.println("computerColorList is empty");
-            return false;
-        }
+        // MÅSTE TA BORT FRÅN EXAKT INDEX PÅ BÅDA STÄLLEN DVS COLORLIST OCH CIRCLELIST
+        // SÅ MAN UNDVIKER DUBLETTER
+        // OM MAN TAR BORT PÅ SAMMA INDEX I ARRAYERNA SÅ BEHÅLLS JU ORDNINGEN  
         
         int i = 0;
         
@@ -248,42 +294,41 @@ public class FXMLDocumentController implements Initializable {
             if(i >= copyOfCompColList.size()){
                 break;
             }
-            
-            
+
                 if(currCircle.getFill().equals(copyOfCompColList.get(i))){
 
                     // så kan vi skapa en svart plupp med indexet som den hittades på
                     //checkArray.put(new Circle(10.0, Color.BLACK), i);
                     // då har vi en map för index och vilken färg
                     checkArray.add(new Circle(10.0, Color.BLACK));
-                    copyOfCompColList.remove(i);
-                    // removen tar bort och "trimmar" i ett, det skapas inte typ som en tom slot
-                    // därför får man hoppa över i++, för indexet på arrayn förändras ju
+                    //copyOfCompColList.remove(i);
+                    
+                    circleList.set(i, new Circle(10.0, Color.CADETBLUE));
+                    copyOfCompColList.set(i , Color.DARKGRAY);
+                    
+                    i++;
+
                     continue;
                 } else {
                     i++;
                     check = false;
                 }
-                
-            
         }
         
         if(check){
+            addResultsToRow(checkArray);
             return check;
         }
-        
-        System.out.println("Detta är efter första iterereringen över rundans gissning:" + checkArray);
-        // tom betyder att inga svarta pluppar har sätts
 
-       
-       
         
         for(Circle currCircle: circleList){
+            if(!copyOfCompColList.isEmpty()){
              if(copyOfCompColList.contains(currCircle.getFill())){
                  checkArray.add(new Circle(10.0, Color.WHITE));
                  copyOfCompColList.remove(currCircle.getFill());
                  continue;
              }
+           }
         }
 
         for(Circle currCircle: checkArray){
@@ -295,27 +340,11 @@ public class FXMLDocumentController implements Initializable {
             }
         }
 
-        // uppdatera det här lilla fältet bredvid med hur många rätt man har
-        
-        
+        addResultsToRow(checkArray);
+
         return check;
     }
-    
-    // problemet är att det börjar uppifrån nu med lägsta... dvs. där som datorns slumpgenererade kombination är
-   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     private ArrayList<Circle> readRow(int elementIndex){
  
         ArrayList<Circle> returnList = new ArrayList<>();
@@ -326,10 +355,45 @@ public class FXMLDocumentController implements Initializable {
         
         return returnList;
     }
+ 
+    private void addResultsToRow(ArrayList<Circle> circleList){
+
+        // man skulle kunna göra ett deque eller liksom en stack av dom olika flowpane objekten
+        // och sen bara poppa av dom
+        
+        round.pop().getChildren().addAll(circleList);
+        
+    }
     
+    private void showRoundPointer(){
+    
+        pointers.getFirst().setFill(Color.RED);
+        pointers.getFirst().setVisible(true);
+    
+    }
+    
+    private void concealRoundPointer(){
+        pointers.pop().setVisible(false);
+    }
+ 
+    private void showComputerRow(ArrayList<Color> computerGenRow){
+    
+        Circle currCircle;
+        
+        for(int i = 0; i < 4; i++){
+            currCircle = (Circle)gameGrid.getChildren().get(i);
+            currCircle.setFill(computerGenRow.get(i));
+        }
+        questionMark1.setVisible(false);
+        questionMark2.setVisible(false);
+        questionMark3.setVisible(false);
+        questionMark4.setVisible(false);
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+
         // TODO
     
 //           sphereTwo.setOnMouseDragged(event -> drag(event));
@@ -343,6 +407,43 @@ public class FXMLDocumentController implements Initializable {
         // HÄR SKA MAN SÄTTA LIKSOM DATORNS FÄRGER... DOM BORDEK UNNA SÄTTAS I EN
         // CONSTANT IOM ATT MAN KÖR OM INITIALIZE VARENDA GÅNG MAN STARTAR OM...VIEWEN?
         // här ska datorns gissning genereras, typ sättas i en konstant eller nåt
+        
+        
+        //round.push(roundEleven);
+        round.push(roundTen);
+        round.push(roundNine);
+        round.push(roundEight);
+        round.push(roundSeven);
+        round.push(roundSix);
+        round.push(roundFive);
+        round.push(roundFour);
+        round.push(roundThree);
+        round.push(roundTwo);
+        round.push(roundOne);
+        
+        pointers.push(pointerTen);
+        pointers.push(pointerNine);
+        pointers.push(pointerEight);
+        pointers.push(pointerSeven);
+        pointers.push(pointerSix);
+        pointers.push(pointerFive);
+        pointers.push(pointerFour);
+        pointers.push(pointerThree);
+        pointers.push(pointerTwo);
+        pointers.push(pointerOne);
+        // behöver inte pointer till första eftersom man aldrig kommer till den
+
+        
+        // LÄGGER IN STARTDATE
+        
+//        Calendar calendar = new Calendar.Builder().build();
+//        java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
+//        playTime.add(startDate);
+
+
+
+
+        // TODO: detta ska kunna styras från en annan sida
         
         ColorList colorList = new ColorList(8);
         //colorList.getRandomRow();
@@ -370,28 +471,48 @@ public class FXMLDocumentController implements Initializable {
                 System.out.print("ORANGE | ");
             }
         }
-//        System.out.println("Computers code for this game: " + computerGenRow);
-
-        System.out.println("hur många gånger komemr jag hit?");
         
+        pointers.getFirst().setFill(Color.RED);
+        pointers.getFirst().setVisible(true);
+
+        
+        System.out.println("VÄRDET AV RÖTT: " + Color.RED);
         
 
         checkButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                // det blir en bugg av att nästa gissning automatiskt är rätt
-                // eftersom color
                 
-                
-                //System.out.println("Size of gameGrid: " + gameGrid.getChildren().get(43));
                 if(checkRow(readRow(roundCount), computerGenRow)){
+                    
+                    // LÄGGER IN ENDDATE
+                    
+//                    Calendar calendar = new Calendar.Builder().build();
+//                    java.sql.Date endDate = new java.sql.Date(calendar.getTime().getTime());
+//                    playTime.add(Math.abs(startDate-endDate));
+//                    
+
                     System.out.println("Circlarnas värden" + readRow(roundCount));
                     System.out.println("You guessed right!");
-                } else {
-                    System.out.println("Circlarnas värden" + readRow(roundCount));
-                    roundCount = roundCount - 4;
-                    System.out.println("You guessed wrong!");
+                    showComputerRow(computerGenRow);
+                    checkButton.setVisible(false);
                     
+                    // LÄGGER IN PLAYTIME I DATABASEN MHA. CONNECTSINGLETONEN
+                    
+                    
+                    
+                } else {
+                    if(round.isEmpty()){
+                        showComputerRow(computerGenRow);
+                        checkButton.setVisible(false);
+                    } else {
+                        System.out.println("Circlarnas värden" + readRow(roundCount));
+                        roundCount = roundCount - 4;
+                        System.out.println("You guessed wrong!");
+                        concealRoundPointer();
+                        showRoundPointer();
+                        // remove listeners för alla berörda blubbar
+                    }
                 }
             }
         });
