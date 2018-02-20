@@ -5,14 +5,21 @@
  */
 package javafxapplication7;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.DriverManager;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Calendar;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 /**
  *
  * @author Elev
@@ -50,7 +57,7 @@ public class MySQLConnect {
     
         // ORDER BY score AND 
         
-        String query = "SELECT * FROM games ORDER BY score DESC";
+        String query = "SELECT * FROM games ORDER BY score";
         
         statement = instance.conn.createStatement();
         
@@ -65,19 +72,26 @@ public class MySQLConnect {
     // det som ska in i tabellen är typ ID(primaryKey), TID(timestamp), ANVÄNDARNAMN(får man välja själv), POÄNG(antalet spelade rundor innan man vunnit), 
     // !!!!!!!!!!!får ta bort så defualtfärgen inte är vit!!!!!!!!!!!!
     
-    public boolean insertNewGame(Date playtime, String userName, int score) throws SQLException{
+    public int insertNewGame(long playtime, String userName, int score, String color1, String color2, String color3, String color4) throws SQLException{
     
-        Calendar calendar = new Calendar.Builder().build();
-        Date endDate = new Date(calendar.getTime().getTime());
+        Date endTime = new Date();
         
-        PreparedStatement statement = instance.conn.prepareStatement("INSERT INTO games (endDate, playTime, userName, score) VALUES(?, ?, ?, ?)");
-        statement.setDate(1, endDate);
+        Timestamp enddate = new Timestamp(endTime.getTime());
+        
+        PreparedStatement stmt= instance.conn.prepareStatement("INSERT INTO games (endDate, playTime, userName, score, color1, color2, color3, color4) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+        stmt.setTimestamp(1, enddate);
         // PLAYTIME FÅR GENERERAS under spelets gång, typ att man 
-        statement.setDate(2, playtime);
-        statement.setString(3, userName);
-        statement.setInt(4, score);
+        stmt.setLong(2, playtime);
+        stmt.setString(3, userName);
+        stmt.setInt(4, score);
+        stmt.setString(5, color1);
+        stmt.setString(6, color2);
+        stmt.setString(7, color3);
+        stmt.setString(8, color4);
+        int insertStatus = stmt.executeUpdate();
+        instance.conn.close();
         
-        return statement.execute();
+        return insertStatus;
         
     }
     

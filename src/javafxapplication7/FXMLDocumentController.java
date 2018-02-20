@@ -6,21 +6,16 @@
 package javafxapplication7;
 
 import java.net.URL;
-import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -35,13 +30,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Text;
-import javafxapplication7.ColorList;
 
 /**
  *
@@ -52,159 +45,41 @@ public class FXMLDocumentController implements Initializable {
     //private ArrayList<Color> colorList = new ArrayList<>();
     private int roundCount = 43; // ELLER VAD DET NU ÄR SOM ÄR LÄNGST NER
     private ArrayList<Color> computerGenRow = new ArrayList<>();
-    private Deque<FlowPane> round = new ArrayDeque<FlowPane>();
-    private Deque<Polygon> pointers = new ArrayDeque<Polygon>();
-    private ArrayList<Date> playTime = new ArrayList<>();
-    
+    private Deque<FlowPane> round = new ArrayDeque<>();
+    private Deque<Polygon> pointers = new ArrayDeque<>();
+    private String userName = "unknown";
+    private Game currGame;
+    private Color[] currResult;
+    private Color[] currColors; 
     private Label label;
-    @FXML
-    private Circle dropField;
-    private Sphere sphereOne;
-    
+//    @FXML
+//    private Circle dropField;
+    private Sphere sphereOne;  
     private PhongMaterial material = new PhongMaterial();
     @FXML
-    private Circle dropField1;
-    @FXML
-    private Circle dropField2;
-    @FXML
-    private Circle dropField3;
-    @FXML
-    private Circle dropField31;
-    @FXML
-    private Circle dropField21;
-    @FXML
-    private Circle dropField11;
-    @FXML
-    private Circle dropField4;
-    @FXML
-    private Circle dropField32;
-    @FXML
-    private Circle dropField22;
-    @FXML
-    private Circle dropField12;
-    @FXML
-    private Circle dropField5;
-    @FXML
-    private Circle dropField33;
-    @FXML
-    private Circle dropField23;
-    @FXML
-    private Circle dropField13;
-    @FXML
-    private Circle dropField6;
-    @FXML
-    private Circle dropField34;
-    @FXML
-    private Circle dropField24;
-    @FXML
-    private Circle dropField14;
-    @FXML
-    private Circle dropField7;
-    @FXML
-    private Circle dropField35;
-    @FXML
-    private Circle dropField25;
-    @FXML
-    private Circle dropField15;
-    @FXML
-    private Circle dropField8;
+    private Circle dropField, dropField1, dropField2, dropField3, dropField4,
+            dropField5, dropField6, dropField7, dropField8, dropField9,
+            dropField10, dropField11, dropField12, dropField13, dropField14,
+            dropField15, dropField16, dropField17, dropField18, dropField19,
+            dropField20, dropField21, dropField22, dropField23, dropField24,
+            dropField25, dropField26, dropField27, dropField28, dropField29,
+            dropField30, dropField31, dropField32, dropField33, dropField34,
+            dropField35, dropField36, dropField37, dropField38, dropField39,
+            dropField40, dropField41, dropField42, dropField43;
     @FXML
     private Button checkButton;
     @FXML
-    private Circle dropField9;
+    private GridPane gameGrid; 
     @FXML
-    private Circle dropField10;
+    private FlowPane colorCircles, roundOne, roundTwo, roundThree, roundFour,
+            roundSix, roundFive, roundSeven, roundEight, roundNine, roundTen;
     @FXML
-    private Circle dropField16;
-    @FXML
-    private Circle dropField17;
-    @FXML
-    private Circle dropField18;
-    @FXML
-    private Circle dropField19;
-    @FXML
-    private Circle dropField20;
-    @FXML
-    private Circle dropField26;
-    @FXML
-    private Circle dropField27;
-    @FXML
-    private Circle dropField28;
-    @FXML
-    private Circle dropField29;
-    @FXML
-    private Circle dropField30;
-    @FXML
-    private Circle dropField36;
-    @FXML
-    private Circle dropField37;
-    @FXML
-    private Circle dropField38;
-    @FXML
-    private Circle dropField39;
-    @FXML
-    private Circle dropField40;
-    @FXML
-    private Circle dropField41;
-    @FXML
-    private Circle dropField42;
-    @FXML
-    private Circle dropField43;
-    @FXML
-    private GridPane gameGrid;
-    @FXML
-    private FlowPane colorCircles;
-
-    @FXML
-    private FlowPane roundOne;
-    @FXML
-    private FlowPane roundTwo;
-    @FXML
-    private FlowPane roundThree;
-    @FXML
-    private FlowPane roundFour;
-    @FXML
-    private FlowPane roundSix;
-    @FXML
-    private FlowPane roundFive;
-    @FXML
-    private FlowPane roundSeven;
-    @FXML
-    private FlowPane roundEight;
-    @FXML
-    private FlowPane roundTen;
-    @FXML
-    private FlowPane roundNine;
-    @FXML
-    private Text questionMark1;
-    @FXML
-    private Text questionMark2;
-    @FXML
-    private Text questionMark3;
-    @FXML
-    private Text questionMark4;
+    private Text questionMark1, questionMark2, questionMark3, questionMark4;
     @FXML
     private AnchorPane backGround;
     @FXML
-    private Polygon pointerOne;
-    @FXML
-    private Polygon pointerTwo;
-    @FXML
-    private Polygon pointerThree;
-    @FXML
-    private Polygon pointerFour;
-    @FXML
-    private Polygon pointerTen;
-    @FXML
-    private Polygon pointerNine;
-    @FXML
-    private Polygon pointerEight;
-    @FXML
-    private Polygon pointerSeven;
-    @FXML
-    private Polygon pointerSix;
-    @FXML
-    private Polygon pointerFive;
+    private Polygon pointerOne, pointerTwo, pointerThree, pointerFour, pointerTen,
+            pointerNine, pointerEight, pointerSeven, pointerSix, pointerFive;
     
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
@@ -259,6 +134,8 @@ public class FXMLDocumentController implements Initializable {
         
         Collections.reverse(circleList);
         
+        
+        
         ArrayList<Color> copyOfCompColList = new ArrayList<>(computerColorList);
         
         // TODO: man kan inte remove:a från en array man itererar över, man får set:a eller ändra
@@ -296,6 +173,7 @@ public class FXMLDocumentController implements Initializable {
             }
 
                 if(currCircle.getFill().equals(copyOfCompColList.get(i))){
+                    
 
                     // så kan vi skapa en svart plupp med indexet som den hittades på
                     //checkArray.put(new Circle(10.0, Color.BLACK), i);
@@ -341,8 +219,34 @@ public class FXMLDocumentController implements Initializable {
         }
 
         addResultsToRow(checkArray);
+        i = 0;
+        currResult = new Color[checkArray.size()];
+        for(Circle currCircle: checkArray){
+            System.out.println("Circle color: " + currCircle.getFill());
+            currResult[i] = (Color)currCircle.getFill();
+            i++;
+        }
 
+        // på första rundan får man inte gissningen, är det för att man bara läser i efterhand???
+        
         return check;
+    }
+    
+    
+    // DELA UPP ALLT MER!
+    
+    
+    private ArrayList<Color> readResultRow(FlowPane currPane){
+    
+        ArrayList<Color> resultColors = new ArrayList<>();
+        
+        
+        for(Node currNode: currPane.getChildren()){
+            resultColors.add((Color)((Circle)currNode).getFill());
+        }
+        
+        return resultColors;
+    
     }
 
     private ArrayList<Circle> readRow(int elementIndex){
@@ -360,6 +264,7 @@ public class FXMLDocumentController implements Initializable {
 
         // man skulle kunna göra ett deque eller liksom en stack av dom olika flowpane objekten
         // och sen bara poppa av dom
+        
         
         round.pop().getChildren().addAll(circleList);
         
@@ -390,24 +295,45 @@ public class FXMLDocumentController implements Initializable {
         questionMark4.setVisible(false);
     }
     
+    private void generateRound(){
+    
+        int i = 0;
+        currColors = new Color[readRow(roundCount).size()];
+        for(Circle currCircle: readRow(roundCount)){
+            currColors[i] = (Color)currCircle.getFill();
+            i++;
+        }
+                
+        Round currRound = new Round(currColors, currResult, new Date());
+                
+        if(currGame.setRound(new Round(currColors, currResult, new Date()))){
+            System.out.println("round was set");
+        }
+    
+    }
+    
+    private void addNewGame(){
+    
+        Date endTime = new Date();
+        java.sql.Timestamp endDate = new java.sql.Timestamp(endTime.getTime());
+        
+        MySQLConnect connection = MySQLConnect.connect();
+                    
+        try {
+            // LÄGGER IN SPELTID, USERNAME, NUMBER OF ROUNDS, DATORNS FÄRGER
+            connection.insertNewGame((currGame.getPlayTime()/1000), 
+                                      currGame.getUser(), currGame.getNumOfRounds(), 
+                                      currGame.getComputerColors().get(0).toString(), 
+                                      currGame.getComputerColors().get(1).toString(), 
+                                      currGame.getComputerColors().get(2).toString(), 
+                                      currGame.getComputerColors().get(3).toString());
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-
-        // TODO
-    
-//           sphereTwo.setOnMouseDragged(event -> drag(event));
-//            circleOne.setOnMouseDragged(event -> drag(event));
-
-        
-        // getColors() ska användas för att ladda antalet färgbluppar
-        // man skulle kunna använda ett grid och typ getChildren().setChild()... för att generera dom olika blupparna
-        
-        // row är 0 indexerad...!!!!!
-        // HÄR SKA MAN SÄTTA LIKSOM DATORNS FÄRGER... DOM BORDEK UNNA SÄTTAS I EN
-        // CONSTANT IOM ATT MAN KÖR OM INITIALIZE VARENDA GÅNG MAN STARTAR OM...VIEWEN?
-        // här ska datorns gissning genereras, typ sättas i en konstant eller nåt
-        
         
         //round.push(roundEleven);
         round.push(roundTen);
@@ -435,13 +361,6 @@ public class FXMLDocumentController implements Initializable {
 
         
         // LÄGGER IN STARTDATE
-        
-//        Calendar calendar = new Calendar.Builder().build();
-//        java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
-//        playTime.add(startDate);
-
-
-
 
         // TODO: detta ska kunna styras från en annan sida
         
@@ -451,6 +370,11 @@ public class FXMLDocumentController implements Initializable {
         genColorCircles(colorList.getColors());
         colorList.setRandomRow();
         computerGenRow = colorList.getRandomColors();
+        
+        Date startTime = new Date();
+        currGame = new Game(startTime, userName, computerGenRow);
+        
+        
         System.out.println("Computers code for this game:");
         for(Color currColor: computerGenRow){
             if(currColor.equals(Color.BLACK)){
@@ -475,37 +399,61 @@ public class FXMLDocumentController implements Initializable {
         pointers.getFirst().setFill(Color.RED);
         pointers.getFirst().setVisible(true);
 
-        
-        System.out.println("VÄRDET AV RÖTT: " + Color.RED);
-        
-
         checkButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 
+                // OM MAN VUNNIT
                 if(checkRow(readRow(roundCount), computerGenRow)){
                     
-                    // LÄGGER IN ENDDATE
-                    
-//                    Calendar calendar = new Calendar.Builder().build();
-//                    java.sql.Date endDate = new java.sql.Date(calendar.getTime().getTime());
-//                    playTime.add(Math.abs(startDate-endDate));
-//                    
-
-                    System.out.println("Circlarnas värden" + readRow(roundCount));
+                    currGame.setEndTime(new Date());
+                    generateRound();
                     System.out.println("You guessed right!");
+                    
+                    // måste vända på den, för när man addar så läggs det in spegelvänt
+                    
+                    
+                    
+                    // obs. att score kan räknas ut med typ 10000 / (rundor * tid/1000)
+                    // 10000 ska vara omöjligt att nå...!
+                    // då får manliksom en icke linjär score
+                    // det ska ju vara tomt på toppen...
+                    
+                    
+                    // men hur ska man lagra varje drag... det är ju en relational database...
+                    // spelen sparas ju med ett unikt id
+                    // man kan ju också spara dom som något slags hexindex som alltid blir unikt
+                    // sen kan man knyta allt till det, ta tillvara på hexet som lagras och lägga till dom olika rundorna etc.
+                    
+                    // detta är ju typ verkligen gjort för att lagra som någon slags objekt form, att man göra ett objekt för varje game
+                    // och lagrar allt i olika fields
+                    
+
+                    
+                    System.out.println("Rundor: " + currGame.getNumOfRounds());
+                    // det är här det blir error
+                    System.out.println("Speltid : " + ((currGame.getEndTime().getTime()-currGame.getTime().getTime())/1000) + " sekunder");
+                    System.out.println("Starttid : " + currGame.getTime().getTime());
+                    
+
                     showComputerRow(computerGenRow);
                     checkButton.setVisible(false);
                     
-                    // LÄGGER IN PLAYTIME I DATABASEN MHA. CONNECTSINGLETONEN
+                    addNewGame();
                     
+                    for(Round currRoun : currGame.getRounds()){
+                        System.out.println(currRoun.toString());
+                    }
                     
                     
                 } else {
                     if(round.isEmpty()){
+                        currGame.setEndTime(new Date());
                         showComputerRow(computerGenRow);
                         checkButton.setVisible(false);
+                        addNewGame();
                     } else {
+                        generateRound();
                         System.out.println("Circlarnas värden" + readRow(roundCount));
                         roundCount = roundCount - 4;
                         System.out.println("You guessed wrong!");
@@ -516,6 +464,9 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         });
+        
+        
+        // EXEMPEL PÅ ANNAN LÖSNING FÖR CIRKLARNA:
         
         
 //        colorCircles.setOnDragDetected(new EventHandler<MouseEvent>(){
@@ -534,106 +485,6 @@ public class FXMLDocumentController implements Initializable {
 //            }
 //        });
 
-
-//        circleSix.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Dragboard db = circleSix.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(circleSix.getId().toString());
-//                db.setContent(content);
-//                System.out.println("onDragDetected");
-//            }
-//        });
-//        
-//        circleSeven.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Dragboard db = circleSeven.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(circleSeven.getId().toString());
-//                db.setContent(content);
-//                System.out.println("onDragDetected");
-//            }
-//        });
-//
-//        circleEight.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Dragboard db = circleEight.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(circleEight.getId().toString());
-//                db.setContent(content);
-//                System.out.println("onDragDetected");
-//            }
-//        });
-//        
-//        circleOne.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Dragboard db = circleOne.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(circleOne.getId().toString());
-//                db.setContent(content);
-//                System.out.println("onDragDetected");
-//            }
-//        });
-//        
-//        circleThree.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Dragboard db = circleThree.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(circleThree.getId().toString());
-//                db.setContent(content);
-//                System.out.println("onDragDetected");
-//            }
-//        });
-//        
-//        circleFour.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Dragboard db = circleFour.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(circleFour.getId().toString());
-//                db.setContent(content);
-//                System.out.println("onDragDetected");   
-//            }
-//        });
-//       
-//        circleFive.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Dragboard db = circleFive.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(circleFive.getId().toString());
-//                db.setContent(content);
-//                System.out.println("onDragDetected");
-//            }
-//        });
-//        
-//        circleTwo.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Dragboard db = circleTwo.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(circleTwo.getId().toString());
-//                db.setContent(content);
-//                System.out.println("onDragDetected");
-//                
-//            }
-//        });
-        
-//        sphereTwo.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Dragboard db = sphereTwo.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(sphereTwo.getId().toString());
-//                db.setContent(content);
-//                System.out.println("onDragDetected");
-//            }
-//        });
         
     }
 
