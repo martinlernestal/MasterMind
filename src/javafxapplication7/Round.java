@@ -29,6 +29,14 @@ public class Round {
         
     }
     
+    public Round(javafx.scene.paint.Color[] colorGuess, javafx.scene.paint.Color[] guessResult, Timestamp timeOfGuess){
+    
+        this.timeOfGuess = timeOfGuess;
+        this.colorGuess = colorGuess;
+        this.guessResult = guessResult;
+    
+    }
+    
     public Color[] getGuess(){
         return colorGuess;
     }
@@ -38,7 +46,6 @@ public class Round {
     }
     
     public Timestamp getTime(){
-    
         return timeOfGuess;
     }
     
@@ -47,9 +54,9 @@ public class Round {
     public String toString(){
         
     
-        return  "Colorguessed: " + getGuess() + "\n" +
-                "Pins result: " + getResult() + "\n" +
-                "Time of guess: " + getTime();
+        return  "Colorguessed: " + getGuess().toString() + "\n" +
+                "Pins result: " + getResult().toString() + "\n" +
+                "Time of guess: " + getTime().toString();
         
     }
     

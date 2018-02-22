@@ -226,5 +226,6 @@
             <Double fx:value="-60.0" />
          </points>
       </Polygon>
+      <Button fx:id="goToHighScore" layoutX="298.0" layoutY="581.0" mnemonicParsing="false" onAction="#changeScreenToHighScore" text="Highscore" />
    </children>
 </AnchorPane>

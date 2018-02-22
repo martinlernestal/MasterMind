@@ -15,6 +15,30 @@ Kolla igenom den här tutorialen:
 ////////////////////////////////////////////////////////////////////////
 
 BUGGAR:
+	- invocationException på spelviewen orsakas antagligen av att den 		försöker använda klassen innan den har instansats, man hade
+		kunnat ha en button som liksom laddar allting allt är 		invisible från början så laddas det när man känner sig "redo"
+
+ATT GÖRA:
+
+	spelsidan
+		- ska komma upp en sån "action" ruta som frågar om man vill 		spela igen (när spelet nått sitt slut)
+		- man ska kunna navigera sig därifrån, och då bli promptad
+		om man verkligen vill lämna
+
+	fixa highscore sida
+		- kanske någon slags dropdown list så man kan se vilka drag 	
+		- lista som är ett ascending resultset från tablen sorterat på
+		score, måste sätta score
+		
+
+	fixa en första sida
+		- man registrerar sitt namn
+		- man väljer hur många färger man ska ha (6 / 8)
+			- detta sparas i en variabel i själva spel FXML:en
+		
+
+	
+	
 
 
 

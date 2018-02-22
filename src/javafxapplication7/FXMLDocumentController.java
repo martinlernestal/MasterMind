@@ -5,19 +5,28 @@
  */
 package javafxapplication7;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.ClipboardContent;
@@ -35,14 +44,28 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  *
  * @author Elev
  */
+
+
+/*
+TODO:
+    sänk opaciteten, remove:a eventhandlern på allt som redan är spelat eller som inte är nuvarande rundan
+    
+    läs in den sista rundan också innan spelet avslutas... annars har man ju bara nio chanser på sig
+
+*/
+
+
 public class FXMLDocumentController implements Initializable {
     
     //private ArrayList<Color> colorList = new ArrayList<>();
+    private ColorList colorList;
+    private int numOfColors = 6;
     private int roundCount = 43; // ELLER VAD DET NU ÄR SOM ÄR LÄNGST NER
     private ArrayList<Color> computerGenRow = new ArrayList<>();
     private Deque<FlowPane> round = new ArrayDeque<>();
@@ -80,10 +103,26 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Polygon pointerOne, pointerTwo, pointerThree, pointerFour, pointerTen,
             pointerNine, pointerEight, pointerSeven, pointerSix, pointerFive;
+    @FXML
+    private Button goToHighScore;
     
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
         label.setText("Hello World!");
+    }
+    
+    public void setNumOfColors(Integer numOfCol){
+        // om detta skapas innan man startar spelet så är det ju inte så bra...
+        // fast allt måste ju kompileras innan så det kan väl inte varan ågora problem?
+        // evnetuellt uppstår det ett nullpointerexception här
+        //this.numOfColors = numOfCol;
+        colorList = new ColorList(numOfCol);
+    }
+    
+    public void setUserName(String userName){
+    
+        this.userName = userName;
+    
     }
     
     private void genColorCircles(ArrayList<Color> colors){
@@ -134,11 +173,9 @@ public class FXMLDocumentController implements Initializable {
         
         Collections.reverse(circleList);
         
-        
-        
         ArrayList<Color> copyOfCompColList = new ArrayList<>(computerColorList);
         
-        // TODO: man kan inte remove:a från en array man itererar över, man får set:a eller ändra
+        // Man kan inte remove:a från en array man itererar över, man får set:a eller ändra
         
         // ALLT BLIR SPEGELVÄNT EFTERSOM MAN ITERERAR BAKLÄNGES GENOM GameGrid ELEMENTEN!
         
@@ -320,6 +357,7 @@ public class FXMLDocumentController implements Initializable {
         MySQLConnect connection = MySQLConnect.connect();
                     
         try {
+            
             // LÄGGER IN SPELTID, USERNAME, NUMBER OF ROUNDS, DATORNS FÄRGER
             connection.insertNewGame((currGame.getPlayTime()/1000), 
                                       currGame.getUser(), currGame.getNumOfRounds(), 
@@ -327,6 +365,11 @@ public class FXMLDocumentController implements Initializable {
                                       currGame.getComputerColors().get(1).toString(), 
                                       currGame.getComputerColors().get(2).toString(), 
                                       currGame.getComputerColors().get(3).toString());
+            for(Round currRound: currGame.getRounds()){
+                connection.insertNewRound(currGame.getEndTime(), currRound); 
+            }
+            
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -335,6 +378,52 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        
+        
+        // FÖR ATT TESTA ATT VI FÅR ALLT FRÅN ETT ÅTERSKAPAT GAME
+        // DETTA FUNKAR MEN DET GER GAMET I DESCENDING ORDER:
+        
+        
+        
+//        Game testGame = null;
+//        MySQLConnect testConn = MySQLConnect.connect();
+//        try {
+//            
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            Date testDate = sdf.parse("2018-02-21 11:23:02");
+//            Timestamp testTime = new Timestamp(testDate.getTime());
+//            testGame = testConn.recreateGame(testTime);
+//            
+//            System.out.println("Endtime:"+ testGame.getEndTime());
+//            System.out.println("Datorns färger: ");
+//            for(Color currColor : testGame.getComputerColors()){
+//                System.out.print(currColor + "|");
+//            }
+//            System.out.println("Antal rundor: " + testGame.getNumOfRounds());
+//            System.out.println("Rundor: ");
+//            for(Round currRound : testGame.getRounds()){
+//                
+//                // Det funkar.... allt är dock descending... obs!
+//                
+//                System.out.println("\n" + currRound.getTime().toString());
+//                System.out.println("Guesses for current round: ");
+//                for(Color currColor : currRound.getGuess()){
+//                    System.out.print(currColor.toString()+" ");
+//                }
+//                System.out.println("\nResults for current round:");
+//                for(Color currColor : currRound.getResult()){
+//                    System.out.print(currColor.toString()+" ");
+//                }
+//                System.out.println("");
+//            }
+//            
+//        } catch (ParseException ex) {
+//            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+
         //round.push(roundEleven);
         round.push(roundTen);
         round.push(roundNine);
@@ -364,9 +453,9 @@ public class FXMLDocumentController implements Initializable {
 
         // TODO: detta ska kunna styras från en annan sida
         
-        ColorList colorList = new ColorList(8);
-        //colorList.getRandomRow();
-        System.out.println(colorList.getColors());
+        //colorList = new ColorList(numOfColors);
+        System.out.println("USERNAME:" + userName);
+
         genColorCircles(colorList.getColors());
         colorList.setRandomRow();
         computerGenRow = colorList.getRandomColors();
@@ -408,6 +497,7 @@ public class FXMLDocumentController implements Initializable {
                     
                     currGame.setEndTime(new Date());
                     generateRound();
+                    currGame.setScore(currGame.getNumOfRounds(), currGame.getPlayTime());
                     System.out.println("You guessed right!");
                     
                     // måste vända på den, för när man addar så läggs det in spegelvänt
@@ -560,11 +650,9 @@ public class FXMLDocumentController implements Initializable {
     }
 
     private void sphereDragDetect(MouseEvent event) {
-        
         System.out.println(event.getEventType());
          System.out.println("Drag detected on sphere");
          System.out.println(event.getTarget());
-        
     }
 
     private void sphereDragDropped(DragEvent event) {
@@ -607,5 +695,24 @@ public class FXMLDocumentController implements Initializable {
         
     }
 
+    @FXML
+    public void changeScreenToHighScore(ActionEvent event) throws IOException{
+        
+        // byta till highscore sidan
+        Parent highScoreParent = FXMLLoader.load(getClass().getResource("FXMLHighScore.fxml"));
+        Scene highScoreScene = new Scene(highScoreParent);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        
+        
+                    
+        // get stage info
+        // detta måste göras till en metod för buttonen ska liksom bubbla
+        // ett event och sen ska man fånga därifrån
+        
+        window.setScene(highScoreScene);
+        window.show();
+    }
+    
     
 }

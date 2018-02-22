@@ -16,10 +16,13 @@ import javafx.scene.paint.Color;
  */
 public class Game{
     
+    // borde lägga in colorlist i gameklassen...!
+    
     private Timestamp starttime, endtime;
     private String username;
     private ArrayList<Color> computerColors;
     private ArrayList<Round> gameRounds = new ArrayList<>();
+    private Integer score;
     
     
     
@@ -29,6 +32,19 @@ public class Game{
         username = userName;
         computerColors = new ArrayList<>(computerArray);
         
+    }
+
+    // constructor för att återskapa ett game
+    
+    public Game(int playTime, Timestamp endTime, String userName, ArrayList<Color> computerColors, ArrayList<Round> rounds){
+    
+        this.endtime = endTime;
+        this.username = userName;
+        this.computerColors = computerColors;
+        this.gameRounds = rounds;
+        setScore(rounds.size(), playTime);
+        this.starttime = new Timestamp(endtime.getTime() - (long)playTime*1000);
+     
     }
     
     public boolean setRound(Round currRound){
@@ -65,4 +81,17 @@ public class Game{
         return endtime.getTime() - starttime.getTime();
     
     }
+    
+    public void setScore(int rounds, long playTime){
+    
+        score = 10000/(rounds*(int)playTime);
+    
+    }
+    
+    public Integer getScore(){
+    
+        return score;
+    
+    }
+    
 }

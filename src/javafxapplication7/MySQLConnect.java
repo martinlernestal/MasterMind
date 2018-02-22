@@ -20,6 +20,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+import javafx.scene.paint.Color;
 /**
  *
  * @author Elev
@@ -28,10 +32,11 @@ public class MySQLConnect {
 
     private static MySQLConnect instance = null;
     private Connection conn;
-    private Statement statement;
+    private Statement statement, statement2;
     private String url = "jdbc:mysql://localhost:3306/mastermind";
     private String user = "root";
     private String passwd = "password";
+    private ArrayList<Game> recreatedGames = new ArrayList<>();
     
     private MySQLConnect(){
         try {
@@ -53,31 +58,139 @@ public class MySQLConnect {
         return instance;
     }
     
-    public ResultSet queryHighScore() throws SQLException{
+    public ArrayList<PropertyRenderedGame> getHighScore() throws SQLException{
     
-        // ORDER BY score AND 
-        
-        String query = "SELECT * FROM games ORDER BY score";
-        
-        statement = instance.conn.createStatement();
-        
-        ResultSet res = statement.executeQuery(query);
-        return res;
-    }
+        ArrayList<PropertyRenderedGame> returnAL = new ArrayList<>();
 
+        String query = "select * from games order by score";
+        statement = instance.conn.createStatement();
+        ResultSet res = statement.executeQuery(query);
+
+        while(res.next()){
+            returnAL.add(new PropertyRenderedGame(res.getString("userName"), res.getInt("score"), res.getTimestamp("endDate")));
+        }
+        statement.close();
+        return returnAL;
+    }
     
-    // den här borde göras om till en insert av en viss typ, så kan man använda preparedStatement etc.
-    // meeen iom. att det inte finns möjlighet för input från användaren så spelar det å andra sidan ingen roll
     
-    // det som ska in i tabellen är typ ID(primaryKey), TID(timestamp), ANVÄNDARNAMN(får man välja själv), POÄNG(antalet spelade rundor innan man vunnit), 
-    // !!!!!!!!!!!får ta bort så defualtfärgen inte är vit!!!!!!!!!!!!
+    public Game recreateGame(Timestamp gameTimeStamp) throws SQLException{
+    
+        String queryGames = "SELECT * FROM games LEFT JOIN rounds "
+                + "ON games.endDate=rounds.timeofgame "
+                + "WHERE games.endDate=? "
+                + "ORDER BY rounds.id DESC";
+
+        PreparedStatement pstmt = instance.conn.prepareStatement(queryGames);
+        pstmt.setTimestamp(1, gameTimeStamp);
+
+        ResultSet res = pstmt.executeQuery();
+        
+        ArrayList<String[]> allColorGuesses = new ArrayList<>();
+        ArrayList<String[]> allColorResults = new ArrayList<>();
+    
+        ArrayList<Round> rounds = new ArrayList<>();
+        
+        ArrayList<Color[]> colorGuessRow = new ArrayList<>();
+        ArrayList<Color[]> colorResultsRow = new ArrayList<>();
+
+        ArrayList<String> colorGuessed = new ArrayList<>();
+        ArrayList<String> colorResults = new ArrayList<>();
+        ArrayList<Timestamp> roundGuessTime = new ArrayList<>();
+        
+        Timestamp currGame = new Timestamp(0);
+        Timestamp testGameVar = new Timestamp(0);
+        
+        long currPlayTime = 0;
+        String currUser = "";
+        int currScore = 0;
+        ArrayList<Color> currCompListColors = new ArrayList<>();
+        
+        while(res.next()){
+            System.out.println("inne i while-loopen");
+            if(currGame.equals(testGameVar)){
+                currGame = new Timestamp(res.getTimestamp("endDate").getTime());
+                currPlayTime = res.getLong("playTime");
+                currUser = res.getString("userName");
+                currScore = res.getInt("score");
+                currCompListColors.add(Color.web(res.getString("color1")));
+                currCompListColors.add(Color.web(res.getString("color2")));
+                currCompListColors.add(Color.web(res.getString("color3")));
+                currCompListColors.add(Color.web(res.getString("color4")));
+            }
+            roundGuessTime.add(res.getTimestamp("timeofguess"));
+            colorGuessed.add(res.getString("guessedcolors"));
+            colorResults.add(res.getString("resultcolors"));
+        }
+
+        // NU ÄR DEN DESCENDING.... eftersom iv har addat så blir allt spegelvänt
+
+        for(String currString : colorGuessed){
+            allColorGuesses.add(currString.split("\\@"));
+        }
+        for(String currString : colorResults){
+            allColorResults.add(currString.split("\\@"));
+        }
+        
+        int i = 0;
+        for(String[] currStringArray : allColorGuesses){
+            Color[] tmpColorHolder = new Color[currStringArray.length];
+            i = 0;
+            for(String currString: currStringArray){
+                // här kan man omvandla till färg!
+                tmpColorHolder[i] = Color.web(currString);
+                i++;
+            }
+            // här har vi en row med färger i arrayform
+            colorGuessRow.add(tmpColorHolder);
+            // här kan man adda till arraylisten
+        }
+        for(String[] currStringArray : allColorResults){
+            Color[] tmpColorHolder = new Color[currStringArray.length];
+            i = 0;
+            for(String currString: currStringArray){
+                // här kan man omvandla till färg
+                tmpColorHolder[i] = Color.web(currString);
+                i++;
+            }
+            // här har vi en row med färger i arrayform
+            // här kan man adda till arraylisten
+            colorResultsRow.add(tmpColorHolder);
+        }
+            
+        // resultrown är en kortare än guessrow så det kan bli nullpointer exception        
+                
+        for(i = 0; i < colorGuessRow.size(); i++){
+            if(colorResultsRow.get(i) == null){
+                Color[] allBlack = new Color[4];
+                for(Color currColor : allBlack){
+                    currColor = Color.BLACK;
+                }
+                // så ska alla vara svarta...
+                // för nu borde dom vara spegelvända igen
+                rounds.add(new Round(colorGuessRow.get(i), allBlack, roundGuessTime.get(i)));
+            }
+            rounds.add(new Round(colorGuessRow.get(i), colorResultsRow.get(i), roundGuessTime.get(i)));
+        }
+
+        Game returnGame = new Game((int) currPlayTime, currGame, currUser, currCompListColors, rounds);
+
+        return returnGame;
+    }
+    
+    public void close() throws SQLException{
+    
+        if(instance != null){
+            instance.conn.close();
+        }
+    }
     
     public int insertNewGame(long playtime, String userName, int score, String color1, String color2, String color3, String color4) throws SQLException{
     
         Date endTime = new Date();
         
         Timestamp enddate = new Timestamp(endTime.getTime());
-        
+
         PreparedStatement stmt= instance.conn.prepareStatement("INSERT INTO games (endDate, playTime, userName, score, color1, color2, color3, color4) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
         stmt.setTimestamp(1, enddate);
         // PLAYTIME FÅR GENERERAS under spelets gång, typ att man 
@@ -89,10 +202,32 @@ public class MySQLConnect {
         stmt.setString(7, color3);
         stmt.setString(8, color4);
         int insertStatus = stmt.executeUpdate();
-        instance.conn.close();
         
         return insertStatus;
         
+    }
+    
+    public void insertNewRound(Timestamp timeOfGame, Round round) throws SQLException{
+    
+        
+        
+        String guessedColors = "";
+        String resultColors = "";
+        
+        for(Color currColor: round.getGuess()){
+            guessedColors += currColor.toString() + "@";
+        }
+        for(Color currColor: round.getResult()){
+            resultColors += currColor.toString() + "@";
+        }
+
+        PreparedStatement stmt = instance.conn.prepareStatement("INSERT INTO rounds (timeofgame, timeofguess, guessedcolors, resultcolors) VALUES (?, ?, ?, ?)");
+        stmt.setTimestamp(1, timeOfGame);
+        stmt.setTimestamp(2, round.getTime());
+        stmt.setString(3, guessedColors);
+        stmt.setString(4, resultColors);
+        stmt.executeUpdate();
+    
     }
     
 }

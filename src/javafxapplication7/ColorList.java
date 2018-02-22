@@ -39,6 +39,7 @@ public class ColorList{
         }
     }
     
+    
     public ArrayList<Color> getColors(){
     
         if(numOfColors==6){
