@@ -40,10 +40,12 @@ public class RegisterBeforeGameController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+
         ObservableList<Integer> colorBoxItems = FXCollections.observableArrayList();
         colorBoxItems.add(6);
         colorBoxItems.add(8);

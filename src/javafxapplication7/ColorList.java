@@ -18,7 +18,7 @@ public class ColorList{
     
     private int numOfColors;
     private ArrayList<Color> generatedColors = new ArrayList<>();
-    private ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.RED, 
+    private ArrayList<Color> colorList = new ArrayList<>(Arrays.asList(Color.RED, 
                                                  Color.BLUE,
                                                  Color.YELLOW,
                                                  Color.GREEN,

@@ -94,7 +94,7 @@ public class Game{
         }
         this.score = score; 
     }
-    
+
     public Integer getScore(){
     
         return score;

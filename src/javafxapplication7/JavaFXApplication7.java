@@ -17,8 +17,19 @@ import javafx.stage.Stage;
  */
 public class JavaFXApplication7 extends Application {
     
+    private static Stage primaryStage; // **Declare static Stage**
+
+    private void setPrimaryStage(Stage stage) {
+        JavaFXApplication7.primaryStage = stage;
+    }
+
+    static public Stage getPrimaryStage() {
+        return JavaFXApplication7.primaryStage;
+    }
+    
     @Override
     public void start(Stage stage) throws Exception {
+        setPrimaryStage(stage);
         
         Parent root = FXMLLoader.load(getClass().getResource("FXMLWelcome.fxml"));
 

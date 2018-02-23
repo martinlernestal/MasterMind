@@ -8,14 +8,12 @@ package javafxapplication7;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +25,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -39,10 +40,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Sphere;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -78,8 +77,6 @@ public class FXMLDocumentController implements Initializable {
     private Label label;
 //    @FXML
 //    private Circle dropField;
-    private Sphere sphereOne;  
-    private PhongMaterial material = new PhongMaterial();
     @FXML
     private Circle dropField, dropField1, dropField2, dropField3, dropField4,
             dropField5, dropField6, dropField7, dropField8, dropField9,
@@ -388,10 +385,6 @@ public class FXMLDocumentController implements Initializable {
         startButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-               
-            
-        
-        // sätt en knapp som liksom är "START"
         
         
         // FÖR ATT TESTA ATT VI FÅR ALLT FRÅN ETT ÅTERSKAPAT GAME
@@ -478,6 +471,8 @@ public class FXMLDocumentController implements Initializable {
         currGame = new Game(startTime, userName, computerGenRow);
         
         
+        // RUNDANS KOD
+        
         System.out.println("Computers code for this game:");
         for(Color currColor: computerGenRow){
             if(currColor.equals(Color.BLACK)){
@@ -520,32 +515,13 @@ public class FXMLDocumentController implements Initializable {
                     currGame.setEndTime(new Date());
                     generateRound();
                     currGame.setScore(currGame.getNumOfRounds(), currGame.getPlayTime());
-                    System.out.println("You guessed right!");
                     
-                    // måste vända på den, för när man addar så läggs det in spegelvänt
+                    // TEST info om rundan
                     
-                    
-                    
-                    // obs. att score kan räknas ut med typ 10000 / (rundor * tid/1000)
-                    // 10000 ska vara omöjligt att nå...!
-                    // då får manliksom en icke linjär score
-                    // det ska ju vara tomt på toppen...
-                    
-                    
-                    // men hur ska man lagra varje drag... det är ju en relational database...
-                    // spelen sparas ju med ett unikt id
-                    // man kan ju också spara dom som något slags hexindex som alltid blir unikt
-                    // sen kan man knyta allt till det, ta tillvara på hexet som lagras och lägga till dom olika rundorna etc.
-                    
-                    // detta är ju typ verkligen gjort för att lagra som någon slags objekt form, att man göra ett objekt för varje game
-                    // och lagrar allt i olika fields
-                    
-
-                    
-                    System.out.println("Rundor: " + currGame.getNumOfRounds());
-                    // det är här det blir error
-                    System.out.println("Speltid : " + ((currGame.getEndTime().getTime()-currGame.getTime().getTime())/1000) + " sekunder");
-                    System.out.println("Starttid : " + currGame.getTime().getTime());
+//                    System.out.println("You guessed right!");            
+//                    System.out.println("Rundor: " + currGame.getNumOfRounds());
+//                    System.out.println("Speltid : " + ((currGame.getEndTime().getTime()-currGame.getTime().getTime())/1000) + " sekunder");
+//                    System.out.println("Starttid : " + currGame.getTime().toString());
                     
 
                     showComputerRow(computerGenRow);
@@ -554,15 +530,19 @@ public class FXMLDocumentController implements Initializable {
                     
                     addNewGame();
                     
+                    // ALERT att man hade rätt
+                    endOfGame("You guessed right!");
                 } else {
                     if(round.isEmpty()){
                         currGame.setEndTime(new Date());
                         showComputerRow(computerGenRow);
                         checkButton.setVisible(false);
-                        addNewGame();
+                        
+                        // ALERT att man hade fel
+                        endOfGame("You guessed wrong!");
+                        
                     } else {
                         generateRound();
-                        System.out.println("Circlarnas värden" + readRow(roundCount));
                         roundCount = roundCount - 4;
                         System.out.println("You guessed wrong!");
                         concealRoundPointer();
@@ -572,36 +552,8 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         });
-        
-        
-        // EXEMPEL PÅ ANNAN LÖSNING FÖR CIRKLARNA:
-        
-        
-//        colorCircles.setOnDragDetected(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent event) {
-//                
-//                System.out.println();
-//                //Circle colorCircle = (Circle)event.getSource();
-//                
-//                Dragboard db = colorCircles.startDragAndDrop(TransferMode.ANY);
-//                ClipboardContent content = new ClipboardContent();
-//                content.putString(event.getSource().toString());
-//                db.setContent(content);
-//                System.out.println(content);
-//                System.out.println("onDragDetected");
-//            }
-//        });
-
         }
         });
-        
-    }
-
-    public void drag(MouseEvent event){
-        Node n = (Node)event.getSource();
-        n.setTranslateX(n.getTranslateX() + event.getX());
-        n.setTranslateY(n.getTranslateY() + event.getY());
     }
 
     @FXML
@@ -610,19 +562,6 @@ public class FXMLDocumentController implements Initializable {
         // som kan färga det eventuella klotet...?
             event.acceptTransferModes(TransferMode.ANY);
             //System.out.println(event.getDragboard().getContent(DataFormat.PLAIN_TEXT));
-    }
-
-    
-    private void circleTwoDragDetect(MouseEvent event) {
-    
-        System.out.println("Drag started from circle two");
-    
-    }
-
-    private void circleOneDragDetect(MouseEvent event) {
-        
-        System.out.println("Drag started from circle one");
-        
     }
 
     @FXML
@@ -639,79 +578,7 @@ public class FXMLDocumentController implements Initializable {
             tmpDropField.setFill(tmpColorCircle.getFill());
         }
         
-//        if(event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleOne")){
-//            System.out.println("DROP BY: Circle one");
-//            tmpDropField.setFill(Color.GREEN);
-//        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleTwo")) {
-//            System.out.println("DROP BY: Circle two");
-//            tmpDropField.setFill(Color.RED);
-//        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleThree")){
-//            System.out.println("DROP BY: Circle three");
-//            tmpDropField.setFill(Color.YELLOW);
-//        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleFour")){
-//            System.out.println("DROP BY: Circle four");
-//            tmpDropField.setFill(Color.BLUE);
-//        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleFive")){
-//            System.out.println("DROP BY: Circle five");
-//            tmpDropField.setFill(Color.BLACK);
-//        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleSix")) {
-//            System.out.println("DROP BY: Circle six");
-//            tmpDropField.setFill(Color.ORANGE);
-//        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleSeven")) {
-//            System.out.println("DROP BY: Circle seven");
-//            tmpDropField.setFill(Color.WHITE);
-//        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleEight")) {
-//            System.out.println("DROP BY: Circle eight");
-//            tmpDropField.setFill(Color.TURQUOISE);
-//        }
-        
         System.out.println(tmpDropField.getFill().equals(Color.BLACK));
-        //System.out.println("DROP BY :" + event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString());
-    }
-
-    private void sphereDragDetect(MouseEvent event) {
-        System.out.println(event.getEventType());
-         System.out.println("Drag detected on sphere");
-         System.out.println(event.getTarget());
-    }
-
-    private void sphereDragDropped(DragEvent event) {
-        
-        event.acceptTransferModes(TransferMode.ANY);
-        System.out.println(event.getEventType());
-        
-        PhongMaterial material = new PhongMaterial();
-        
-        
-        System.out.println(event.getSource().toString());
-        
-        if(event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleOne")){
-            System.out.println("DROP BY: Circle one");
-            material.setDiffuseColor(Color.DARKGREEN);
-            material.setSpecularColor(Color.GREEN);
-            sphereOne.setMaterial(material);
-        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleTwo")) {
-            System.out.println("DROP BY: Circle two");
-            material.setDiffuseColor(Color.DARKRED);
-            material.setSpecularColor(Color.RED);
-            sphereOne.setMaterial(material);
-        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleThree")){
-            System.out.println("DROP BY: Circle three");
-            material.setDiffuseColor(Color.WHEAT);
-            material.setSpecularColor(Color.YELLOW);
-            sphereOne.setMaterial(material);
-        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleFour")){
-            System.out.println("DROP BY: Circle four");
-            material.setDiffuseColor(Color.DARKBLUE);
-            material.setSpecularColor(Color.BLUE);
-            sphereOne.setMaterial(material);
-        } else if (event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("circleFive")){
-            System.out.println("DROP BY: Circle five");
-            material.setDiffuseColor(Color.BLACK);
-            material.setSpecularColor(Color.GRAY);
-            sphereOne.setMaterial(material);
-        }
-
         
     }
 
@@ -763,6 +630,29 @@ public class FXMLDocumentController implements Initializable {
         
         window.setScene(highScoreScene);
         window.show();
+    
+    }
+    
+    public void endOfGame(String message){
+    
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle(message);
+        alert.setContentText(message + "\nDo you want to play again?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if((result.isPresent())&&(result.get()==ButtonType.OK)){
+            Parent highScoreParent;
+            try {
+                highScoreParent = FXMLLoader.load(getClass().getResource("RegisterBeforeGame.fxml"));
+                Scene highScoreScene = new Scene(highScoreParent);
+                Stage window = JavaFXApplication7.getPrimaryStage();
+                window.setScene(highScoreScene);
+                window.show();
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            }         
+        }else{
+            alert.close();
+        }
     
     }
 

@@ -6,8 +6,6 @@
 package javafxapplication7;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import javafx.scene.paint.Color;
 
 /**
@@ -19,7 +17,6 @@ public class Round {
     private Color[] colorGuess = new Color[4];
     private Color[] guessResult = new Color[4];
     private Timestamp timeOfGuess;
-    //Sedan ska varje drag registreras med färgkod, markörer och tidpunkt.
     
     public Round(javafx.scene.paint.Color[] colorGuess, javafx.scene.paint.Color[] guessResult, java.util.Date timeOfGuess){
    
@@ -49,17 +46,6 @@ public class Round {
     
     public Timestamp getTime(){
         return timeOfGuess;
-    }
-    
-
-    
-    public String toString(){
-        
-    
-        return  "Colorguessed: " + getGuess().toString() + "\n" +
-                "Pins result: " + getResult().toString() + "\n" +
-                "Time of guess: " + getTime().toString();
-        
     }
     
 }

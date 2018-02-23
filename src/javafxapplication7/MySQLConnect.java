@@ -5,24 +5,15 @@
  */
 package javafxapplication7;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.sql.Blob;
 import java.sql.DriverManager;
 import java.sql.Connection;
-import java.util.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 import javafx.scene.paint.Color;
 /**
  *
@@ -62,7 +53,7 @@ public class MySQLConnect {
     
         ArrayList<PropertyRenderedGame> returnAL = new ArrayList<>();
 
-        String query = "select * from games order by score";
+        String query = "select * from games order by score desc";
         statement = instance.conn.createStatement();
         ResultSet res = statement.executeQuery(query);
 
@@ -73,6 +64,7 @@ public class MySQLConnect {
         return returnAL;
     }
     
+    // en metod för att återskapa ett spel utifrån databasen
     
     public Game recreateGame(Timestamp gameTimeStamp) throws SQLException{
     
@@ -189,7 +181,6 @@ public class MySQLConnect {
     
         PreparedStatement stmt= instance.conn.prepareStatement("INSERT INTO games (endDate, playTime, userName, score, color1, color2, color3, color4) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
         stmt.setTimestamp(1, newGame.getEndTime());
-        // PLAYTIME FÅR GENERERAS under spelets gång, typ att man 
         stmt.setLong(2, newGame.getPlayTime());
         stmt.setString(3, newGame.getUser());
         stmt.setInt(4, newGame.getScore());

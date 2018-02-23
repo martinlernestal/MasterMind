@@ -14,57 +14,16 @@ Kolla igenom den här tutorialen:
 //				TODO				      //
 ////////////////////////////////////////////////////////////////////////
 
+
 BUGGAR:
 	
 
 ATT GÖRA:
 
 	Sätta en score beroende på hur många färger man har valt,
-		samt om det är unikt!
-	
-
-	spelsidan
-		- ska komma upp en sån "action" ruta som frågar om man vill 							spela igen (när spelet nått sitt slut)
-			typ en knapp "new game"		
-			alla såna redirects ska till RegisterBeforeGame.fxml
-	
-		- man ska kunna navigera sig därifrån, och då bli promptad
-			om man verkligen vill lämna
-
-	fixa highscore sida
-		- kanske någon slags dropdown list så man kan se vilka drag 	
-		- lista som är ett ascending resultset från tablen sorterat på
-			score, måste sätta score
-		
-
-	fixa en första sida
-		- man registrerar sitt namn
-		- man väljer hur många färger man ska ha (6 / 8)
-			- detta sparas i en variabel i själva spel FXML:en
-		
-
+	samt om det är unikt!
 	
 	
-
-
-
-Färger: 6 eller 8
-Hål: 4
-
-
-Eftersom alla rader kommer visas från början så får man styra det hela genom 		att tillåta / inte tillåta att man sätter på raden man försöker sätta 		en cirkel i
-
-Det ska finnas två views, en som är om man vill LOAD:a ett tidigare spel, 	kolla på HIGHSCORE:n
-
-
-
-Enum klass för alla dom olika färgade blupparna, eller ås kan man man använda
-	Colors.ENUM, men om man vill ha egna färger så får man göra en egen 		ENUM klass med alla RGB värden
-
-
-EVENTUELLT: 
-	Använd 3D objekt, typ sphere och dyl.
-
 
 
 
