@@ -42,7 +42,9 @@ public class Round {
     }
     
     public Color[] getResult(){
-        return guessResult;
+
+            return guessResult;
+ 
     }
     
     public Timestamp getTime(){

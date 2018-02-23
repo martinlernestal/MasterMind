@@ -84,7 +84,28 @@ public class Game{
     
     public void setScore(int rounds, long playTime){
     
-        score = 10000/(rounds*(int)playTime);
+        int score = 10080;
+        if(computerColors.size() == 6){
+            score *= 0.8;
+        } 
+        score -= (playTime/13) * (rounds*17);
+   
+        score /= 50;
+
+        if(rounds == 1){
+            // eftersom man uppenbarligen har chansat
+            score = 50;
+        }
+        score -= 100;
+        
+        if(score > 100){
+            score = 100;
+        }
+        if(score < 0){
+            score = 0;
+        }
+        
+        this.score = score;
     
     }
     

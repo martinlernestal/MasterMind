@@ -15,20 +15,26 @@ Kolla igenom den här tutorialen:
 ////////////////////////////////////////////////////////////////////////
 
 BUGGAR:
-	- invocationException på spelviewen orsakas antagligen av att den 		försöker använda klassen innan den har instansats, man hade
-		kunnat ha en button som liksom laddar allting allt är 		invisible från början så laddas det när man känner sig "redo"
+	
 
 ATT GÖRA:
 
+	Sätta en score beroende på hur många färger man har valt,
+		samt om det är unikt!
+	
+
 	spelsidan
-		- ska komma upp en sån "action" ruta som frågar om man vill 		spela igen (när spelet nått sitt slut)
+		- ska komma upp en sån "action" ruta som frågar om man vill 							spela igen (när spelet nått sitt slut)
+			typ en knapp "new game"		
+			alla såna redirects ska till RegisterBeforeGame.fxml
+	
 		- man ska kunna navigera sig därifrån, och då bli promptad
-		om man verkligen vill lämna
+			om man verkligen vill lämna
 
 	fixa highscore sida
 		- kanske någon slags dropdown list så man kan se vilka drag 	
 		- lista som är ett ascending resultset från tablen sorterat på
-		score, måste sätta score
+			score, måste sätta score
 		
 
 	fixa en första sida

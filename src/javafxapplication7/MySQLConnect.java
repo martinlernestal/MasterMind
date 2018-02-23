@@ -185,22 +185,21 @@ public class MySQLConnect {
         }
     }
     
-    public int insertNewGame(long playtime, String userName, int score, String color1, String color2, String color3, String color4) throws SQLException{
+    public int insertNewGame(Game newGame) throws SQLException{
     
-        Date endTime = new Date();
-        
-        Timestamp enddate = new Timestamp(endTime.getTime());
-
         PreparedStatement stmt= instance.conn.prepareStatement("INSERT INTO games (endDate, playTime, userName, score, color1, color2, color3, color4) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-        stmt.setTimestamp(1, enddate);
+        stmt.setTimestamp(1, newGame.getEndTime());
         // PLAYTIME FÅR GENERERAS under spelets gång, typ att man 
-        stmt.setLong(2, playtime);
-        stmt.setString(3, userName);
-        stmt.setInt(4, score);
-        stmt.setString(5, color1);
-        stmt.setString(6, color2);
-        stmt.setString(7, color3);
-        stmt.setString(8, color4);
+        stmt.setLong(2, newGame.getPlayTime());
+        stmt.setString(3, newGame.getUser());
+        stmt.setInt(4, newGame.getNumOfRounds());
+        
+        int i = 5;
+        for(Color currColor: newGame.getComputerColors()){
+            stmt.setString(i, currColor.toString());
+            i++;
+        }
+        
         int insertStatus = stmt.executeUpdate();
         
         return insertStatus;
@@ -217,10 +216,19 @@ public class MySQLConnect {
         for(Color currColor: round.getGuess()){
             guessedColors += currColor.toString() + "@";
         }
-        for(Color currColor: round.getResult()){
-            resultColors += currColor.toString() + "@";
+        if(round.getResult()!=null){
+            // om den är tom så är det för att det är första rundan...
+            for(Color currColor: round.getResult()){
+                resultColors += currColor.toString() + "@";
+            }
+        } else {
+        
+            resultColors = Color.BLACK.toString() + "@" + 
+                    Color.BLACK.toString() + "@" + 
+                    Color.BLACK.toString() + "@" + 
+                    Color.BLACK.toString() + "@";
+        
         }
-
         PreparedStatement stmt = instance.conn.prepareStatement("INSERT INTO rounds (timeofgame, timeofguess, guessedcolors, resultcolors) VALUES (?, ?, ?, ?)");
         stmt.setTimestamp(1, timeOfGame);
         stmt.setTimestamp(2, round.getTime());

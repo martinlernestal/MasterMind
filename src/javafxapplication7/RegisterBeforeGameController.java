@@ -35,6 +35,8 @@ public class RegisterBeforeGameController implements Initializable {
     private ChoiceBox<Integer> colorBox;
     @FXML
     private TextField userNameField;
+    @FXML
+    private ChoiceBox<String> uniqueRegular;
 
     /**
      * Initializes the controller class.
@@ -45,6 +47,12 @@ public class RegisterBeforeGameController implements Initializable {
         ObservableList<Integer> colorBoxItems = FXCollections.observableArrayList();
         colorBoxItems.add(6);
         colorBoxItems.add(8);
+        
+        ObservableList<String> uniqueRegularItems = FXCollections.observableArrayList();
+        uniqueRegularItems.add("Unique");
+        uniqueRegularItems.add("Multiple");
+        
+        uniqueRegular.setItems(uniqueRegularItems);
         colorBox.setItems(colorBoxItems);
     }
 
@@ -58,11 +66,16 @@ public class RegisterBeforeGameController implements Initializable {
         FXMLDocumentController controller = getToGame.getController();
         controller.setNumOfColors(colorBox.getSelectionModel().getSelectedItem());
         controller.setUserName(userNameField.getText());
+        if(uniqueRegular.getSelectionModel().getSelectedItem().equals("Unique")){
+            controller.setColorConstraints(true);
+        } else {
+            controller.setColorConstraints(false);
+        }
+            
         Scene theGame = new Scene(getTG);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(theGame);
         window.show();
-        
-    
+
     }
 }

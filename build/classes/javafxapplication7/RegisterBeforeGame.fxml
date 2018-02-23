@@ -7,11 +7,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="423.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication7.RegisterBeforeGameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="260.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication7.RegisterBeforeGameController">
    <children>
-      <Button fx:id="startGame" layoutX="174.0" layoutY="227.0" mnemonicParsing="false" onAction="#startNewGame" text="Start game" />
-      <ChoiceBox fx:id="colorBox" layoutX="264.0" layoutY="185.0" prefHeight="25.0" prefWidth="28.0" />
-      <TextField fx:id="userNameField" layoutX="127.0" layoutY="185.0" prefHeight="25.0" prefWidth="137.0" promptText="Username" />
-      <Label layoutX="87.0" layoutY="149.0" prefHeight="25.0" prefWidth="249.0" text="Choose a username and the number of colors " />
+      <Button fx:id="startGame" layoutX="92.0" layoutY="304.0" mnemonicParsing="false" onAction="#startNewGame" prefHeight="25.0" prefWidth="80.0" text="Start game" />
+      <ChoiceBox fx:id="colorBox" layoutX="202.0" layoutY="208.0" prefHeight="25.0" prefWidth="28.0" />
+      <TextField fx:id="userNameField" layoutX="97.0" layoutY="170.0" prefHeight="25.0" prefWidth="137.0" promptText="Username" />
+      <Label layoutX="31.0" layoutY="170.0" prefHeight="25.0" prefWidth="58.0" text="Username:" />
+      <Label layoutX="31.0" layoutY="245.0" prefHeight="25.0" prefWidth="182.0" text="Unique or multiple colors:" />
+      <Label layoutX="31.0" layoutY="208.0" prefHeight="25.0" prefWidth="137.0" text="Number of colors:" />
+      <ChoiceBox fx:id="uniqueRegular" layoutX="202.0" layoutY="245.0" prefHeight="25.0" prefWidth="28.0" />
+      <Label layoutX="35.0" layoutY="71.0" text="User info">
+         <font>
+            <Font name="Consolas" size="39.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

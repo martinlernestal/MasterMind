@@ -44,6 +44,7 @@ public class FXMLWelcomeController implements Initializable {
     // OM MAN SKA REFRESHA SPELET SÅ FÅR MAN VÄL REDIRECTA TILL SIG SJÄLV, MED SAMMA NICK?
     
     
+    @FXML
     public void goToHighScore(ActionEvent event) throws IOException{
     
         Parent goToHighScorePage = FXMLLoader.load(getClass().getResource("FXMLHighScore.fxml"));
@@ -54,6 +55,7 @@ public class FXMLWelcomeController implements Initializable {
     
     }
     
+    @FXML
     public void goToNewGame(ActionEvent event) throws IOException{
     
         Parent goToNewGame = FXMLLoader.load(getClass().getResource("RegisterBeforeGame.fxml"));

@@ -66,6 +66,7 @@ public class FXMLDocumentController implements Initializable {
     //private ArrayList<Color> colorList = new ArrayList<>();
     private ColorList colorList;
     private int numOfColors = 6;
+    private boolean uniqueColor = true;
     private int roundCount = 43; // ELLER VAD DET NU ÄR SOM ÄR LÄNGST NER
     private ArrayList<Color> computerGenRow = new ArrayList<>();
     private Deque<FlowPane> round = new ArrayDeque<>();
@@ -105,18 +106,21 @@ public class FXMLDocumentController implements Initializable {
             pointerNine, pointerEight, pointerSeven, pointerSix, pointerFive;
     @FXML
     private Button goToHighScore;
-    
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
-    }
+    @FXML
+    private Button startButton;
+    @FXML
+    private Button startNewGame;
+    @FXML
+    private Button backButton;
+
+    // METODER SOM ANROPAS FRÅN REGISTERBEFOREGAME SIDAN >>>
     
     public void setNumOfColors(Integer numOfCol){
         // om detta skapas innan man startar spelet så är det ju inte så bra...
         // fast allt måste ju kompileras innan så det kan väl inte varan ågora problem?
         // evnetuellt uppstår det ett nullpointerexception här
         //this.numOfColors = numOfCol;
-        colorList = new ColorList(numOfCol);
+        this.numOfColors = numOfCol;
     }
     
     public void setUserName(String userName){
@@ -125,6 +129,14 @@ public class FXMLDocumentController implements Initializable {
     
     }
     
+    public void setColorConstraints(boolean condition){
+    
+        this.uniqueColor = condition;
+ 
+    }
+    
+    //  <<< METODER SOM ANROPAS FRÅN EN REGISTERBEFOREGAME SIDAN >>>
+
     private void genColorCircles(ArrayList<Color> colors){
         
         int index = 1;
@@ -133,7 +145,7 @@ public class FXMLDocumentController implements Initializable {
         
         for(Color currColor: colors){
             
-            colorCircles.getChildren().add(new Circle(25, currColor));
+            colorCircles.getChildren().add(new Circle(20, currColor));
             //colorCircles.getChildren().get(index).setId("colorCircle");
             System.out.println("genColorCircles runda:" + index);
             index++;
@@ -268,11 +280,7 @@ public class FXMLDocumentController implements Initializable {
         
         return check;
     }
-    
-    
-    // DELA UPP ALLT MER!
-    
-    
+
     private ArrayList<Color> readResultRow(FlowPane currPane){
     
         ArrayList<Color> resultColors = new ArrayList<>();
@@ -354,18 +362,16 @@ public class FXMLDocumentController implements Initializable {
         Date endTime = new Date();
         java.sql.Timestamp endDate = new java.sql.Timestamp(endTime.getTime());
         
+        currGame.setEndTime(endDate);
+        
         MySQLConnect connection = MySQLConnect.connect();
                     
         try {
             
             // LÄGGER IN SPELTID, USERNAME, NUMBER OF ROUNDS, DATORNS FÄRGER
-            connection.insertNewGame((currGame.getPlayTime()/1000), 
-                                      currGame.getUser(), currGame.getNumOfRounds(), 
-                                      currGame.getComputerColors().get(0).toString(), 
-                                      currGame.getComputerColors().get(1).toString(), 
-                                      currGame.getComputerColors().get(2).toString(), 
-                                      currGame.getComputerColors().get(3).toString());
+            connection.insertNewGame(currGame);
             for(Round currRound: currGame.getRounds()){
+                // lägger in dom med samma endtime alltså så får dom samma "id"
                 connection.insertNewRound(currGame.getEndTime(), currRound); 
             }
             
@@ -378,6 +384,13 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        startButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+               
+            
+        
+        // sätt en knapp som liksom är "START"
         
         
         // FÖR ATT TESTA ATT VI FÅR ALLT FRÅN ETT ÅTERSKAPAT GAME
@@ -453,11 +466,11 @@ public class FXMLDocumentController implements Initializable {
 
         // TODO: detta ska kunna styras från en annan sida
         
-        //colorList = new ColorList(numOfColors);
-        System.out.println("USERNAME:" + userName);
+        // en till parameter... nämligen om det ska vara unikt eller inte
+        
+        colorList = new ColorList(numOfColors, uniqueColor);
 
         genColorCircles(colorList.getColors());
-        colorList.setRandomRow();
         computerGenRow = colorList.getRandomColors();
         
         Date startTime = new Date();
@@ -485,8 +498,16 @@ public class FXMLDocumentController implements Initializable {
             }
         }
         
+        startButton.setVisible(false);
+        
         pointers.getFirst().setFill(Color.RED);
         pointers.getFirst().setVisible(true);
+        
+        checkButton.setVisible(true);
+        gameGrid.setVisible(true);
+        colorCircles.setVisible(true);
+        goToHighScore.setVisible(true);
+        
 
         checkButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -528,13 +549,9 @@ public class FXMLDocumentController implements Initializable {
 
                     showComputerRow(computerGenRow);
                     checkButton.setVisible(false);
+                    startNewGame.setVisible(true);
                     
                     addNewGame();
-                    
-                    for(Round currRoun : currGame.getRounds()){
-                        System.out.println(currRoun.toString());
-                    }
-                    
                     
                 } else {
                     if(round.isEmpty()){
@@ -575,6 +592,8 @@ public class FXMLDocumentController implements Initializable {
 //            }
 //        });
 
+        }
+        });
         
     }
 
@@ -714,5 +733,37 @@ public class FXMLDocumentController implements Initializable {
         window.show();
     }
     
+    @FXML
+    public void startNewGame(ActionEvent event) throws IOException{
+    
+        Parent highScoreParent = FXMLLoader.load(getClass().getResource("RegisterBeforeGame.fxml"));
+        Scene highScoreScene = new Scene(highScoreParent);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        // get stage info
+        // detta måste göras till en metod för buttonen ska liksom bubbla
+        // ett event och sen ska man fånga därifrån
+        
+        window.setScene(highScoreScene);
+        window.show();
+    
+    }
+    
+    @FXML
+    public void goBack(ActionEvent event) throws IOException{
+    
+        Parent highScoreParent = FXMLLoader.load(getClass().getResource("FXMLWelcome.fxml"));
+        Scene highScoreScene = new Scene(highScoreParent);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        // get stage info
+        // detta måste göras till en metod för buttonen ska liksom bubbla
+        // ett event och sen ska man fånga därifrån
+        
+        window.setScene(highScoreScene);
+        window.show();
+    
+    }
+
     
 }

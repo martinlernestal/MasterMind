@@ -47,6 +47,8 @@ public class FXMLHighScoreController implements Initializable {
     @FXML TableColumn<PropertyRenderedGame, Timestamp> tableTime;
     @FXML
     private Button newGameButton;
+    @FXML
+    private Button backButton;
     
     /**
      * Initializes the controller class.
@@ -66,12 +68,28 @@ public class FXMLHighScoreController implements Initializable {
     @FXML
     public void goToNewGame(ActionEvent event) throws IOException{
     
-        Parent goToNewGame = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        Parent goToNewGame = FXMLLoader.load(getClass().getResource("RegisterBeforeGame.fxml"));
         Scene newGameScene = new Scene(goToNewGame);
         
         Stage newGame = (Stage)((Node)event.getSource()).getScene().getWindow();
         newGame.setScene(newGameScene);
         newGame.show();
+    }
+    
+    @FXML
+    public void goBack(ActionEvent event) throws IOException{
+    
+        Parent highScoreParent = FXMLLoader.load(getClass().getResource("FXMLWelcome.fxml"));
+        Scene highScoreScene = new Scene(highScoreParent);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        // get stage info
+        // detta måste göras till en metod för buttonen ska liksom bubbla
+        // ett event och sen ska man fånga därifrån
+        
+        window.setScene(highScoreScene);
+        window.show();
+    
     }
     
     

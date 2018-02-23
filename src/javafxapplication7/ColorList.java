@@ -29,7 +29,10 @@ public class ColorList{
     private ArrayList<Color> trimmedList = new ArrayList<>();
     
     
-    public ColorList(int numOfColors){
+    public ColorList(int numOfColors, boolean condition){
+        
+        // OM CONDITION ÄR SANN SÅ SKA DET VARA UNIKT
+        
         this.numOfColors = numOfColors;
         if(numOfColors == 6){
             trimmedList = colorList;
@@ -37,6 +40,8 @@ public class ColorList{
             trimmedList.remove(6);
             trimmedList.trimToSize();
         }
+        
+        setRandomRow(condition);
     }
     
     
@@ -49,15 +54,25 @@ public class ColorList{
     
     }
     
-    public void setRandomRow(){
+    public void setRandomRow(boolean condition){
     
-        if(numOfColors==6){
-            // om vi har bestämt att vi bara ska ha 6 färger så får den
-            // genererade raden bara utgå ifrån dom första 6
+        if(condition){
             
-            this.generatedColors = getRandomSequence(trimmedList);
+            // UNIKT
+            
+            if(numOfColors==6){
+                this.generatedColors = getRandomSequenceUnique(trimmedList);
+            }
+            this.generatedColors = getRandomSequenceUnique(colorList);
+        } else {
+            
+            // STANDARD
+            
+            if(numOfColors==6){
+                this.generatedColors = getRandomSequence(trimmedList);
+            }
+            this.generatedColors = getRandomSequence(colorList);
         }
-        this.generatedColors = getRandomSequence(colorList);
     }
     
     private ArrayList<Color> getRandomSequence(ArrayList<Color> inColors){
@@ -70,6 +85,22 @@ public class ColorList{
         for(int i = 0; i < 4; i++){
             outColors.add(inColors.get(randIndex.nextInt(inColors.size())));
         }
+        return outColors;
+    }
+    
+    private ArrayList<Color> getRandomSequenceUnique(ArrayList<Color> inColors){
+    
+        Random randIndex = new Random();
+        ArrayList<Color> outColors = new ArrayList<>();
+        Color currColor;
+        
+        while(outColors.size() < 4){
+            currColor = inColors.get(randIndex.nextInt(inColors.size()));
+            if(!outColors.contains(currColor)||outColors.isEmpty()){
+                outColors.add(currColor);
+            }
+        }
+        
         return outColors;
     }
     
