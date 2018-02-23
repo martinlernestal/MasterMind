@@ -363,6 +363,7 @@ public class FXMLDocumentController implements Initializable {
         java.sql.Timestamp endDate = new java.sql.Timestamp(endTime.getTime());
         
         currGame.setEndTime(endDate);
+        currGame.setScore(currGame.getNumOfRounds(), currGame.getPlayTime()/2000);
         
         MySQLConnect connection = MySQLConnect.connect();
                     

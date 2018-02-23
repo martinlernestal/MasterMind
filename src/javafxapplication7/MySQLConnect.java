@@ -192,7 +192,7 @@ public class MySQLConnect {
         // PLAYTIME FÅR GENERERAS under spelets gång, typ att man 
         stmt.setLong(2, newGame.getPlayTime());
         stmt.setString(3, newGame.getUser());
-        stmt.setInt(4, newGame.getNumOfRounds());
+        stmt.setInt(4, newGame.getScore());
         
         int i = 5;
         for(Color currColor: newGame.getComputerColors()){
