@@ -19,6 +19,9 @@ import javafx.scene.paint.Color;
  *
  * @author Elev
  */
+
+// en singleton class för att ksöta connectionen till databasen och inserts och selects
+
 public class MySQLConnect {
 
     private static MySQLConnect instance = null;
@@ -49,6 +52,9 @@ public class MySQLConnect {
         return instance;
     }
     
+    
+    // en metod som returnerar alla spel sorterat efter score
+    
     public ArrayList<PropertyRenderedGame> getHighScore() throws SQLException{
     
         ArrayList<PropertyRenderedGame> returnAL = new ArrayList<>();
@@ -64,7 +70,7 @@ public class MySQLConnect {
         return returnAL;
     }
     
-    // en metod för att återskapa ett spel utifrån databasen
+    // en metod för att återskapa ett spel utifrån databasen, alltså återskapar ett gameobjekt med alla dess rundor
     
     public Game recreateGame(Timestamp gameTimeStamp) throws SQLException{
     
@@ -177,6 +183,8 @@ public class MySQLConnect {
         }
     }
     
+    // en metod som insertar en ny spelomgång
+    
     public int insertNewGame(Game newGame) throws SQLException{
     
         PreparedStatement stmt= instance.conn.prepareStatement("INSERT INTO games (endDate, playTime, userName, score, color1, color2, color3, color4) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
@@ -196,6 +204,9 @@ public class MySQLConnect {
         return insertStatus;
         
     }
+    
+    
+    // en metod som insertar en ny runda
     
     public void insertNewRound(Timestamp timeOfGame, Round round) throws SQLException{
     

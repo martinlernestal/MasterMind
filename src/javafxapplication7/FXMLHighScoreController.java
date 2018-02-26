@@ -10,12 +10,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,9 +24,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 /**
@@ -70,6 +62,8 @@ public class FXMLHighScoreController implements Initializable {
 
     }
     
+    // metod för att påbörja ett nytt spel
+    
     @FXML
     public void goToNewGame(ActionEvent event) throws IOException{
     
@@ -81,21 +75,21 @@ public class FXMLHighScoreController implements Initializable {
         newGame.show();
     }
     
+    // metod för att gå tillbaka till första sidan/viewen
+    
     @FXML
     public void goBack(ActionEvent event) throws IOException{
     
         Parent highScoreParent = FXMLLoader.load(getClass().getResource("FXMLWelcome.fxml"));
         Scene highScoreScene = new Scene(highScoreParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        // get stage info
-        // detta måste göras till en metod för buttonen ska liksom bubbla
-        // ett event och sen ska man fånga därifrån
         
         window.setScene(highScoreScene);
         window.show();
     
     }
+    
+    // metod för att ge en list av alla rows som ska sättas in i tabellen
 
     public ObservableList<PropertyRenderedGame> getGames(){
         

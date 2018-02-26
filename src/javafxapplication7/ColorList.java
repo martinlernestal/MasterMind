@@ -14,6 +14,10 @@ import java.util.Random;
  *
  * @author Elev
  */
+
+// en klass som sköter antal färger och datorns gissning
+
+
 public class ColorList{
     
     private int numOfColors;
@@ -28,6 +32,7 @@ public class ColorList{
                                                  Color.BLACK));
     private ArrayList<Color> trimmedList = new ArrayList<>();
     
+    // constructorn kollar hur många färger som ska genereras och om värdena skall vara unika eller ej
     
     public ColorList(int numOfColors, boolean condition){
         
@@ -75,9 +80,10 @@ public class ColorList{
         }
     }
     
+    // ger tillbaka en randomsequence som inte tar hänsyn till om färgerna skall vara unika
+    
     private ArrayList<Color> getRandomSequence(ArrayList<Color> inColors){
         
-        //itererar över dom och ger tillbaka 4 element
         
         int index;
         Random randIndex = new Random();
@@ -87,6 +93,8 @@ public class ColorList{
         }
         return outColors;
     }
+    
+    // ger tillbaka en randomsequence som tar hänsyn till att färgerna skall vara unika
     
     private ArrayList<Color> getRandomSequenceUnique(ArrayList<Color> inColors){
     

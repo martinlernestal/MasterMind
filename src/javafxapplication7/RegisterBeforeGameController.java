@@ -60,6 +60,9 @@ public class RegisterBeforeGameController implements Initializable {
 
 
     @FXML
+    
+    // en metod som samlar upp värderna från alla inputfields och tar med dom värdena in i en ny spelomgång/ byter view
+    
     public void startNewGame(ActionEvent event) throws IOException{
         
         FXMLLoader getToGame = new FXMLLoader();

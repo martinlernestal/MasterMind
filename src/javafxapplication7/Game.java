@@ -14,6 +14,11 @@ import javafx.scene.paint.Color;
  *
  * @author Elev
  */
+
+
+// class som skapar och genererar spelomgångar
+
+
 public class Game{
     
     // borde lägga in colorlist i gameklassen...!
@@ -81,6 +86,9 @@ public class Game{
         return endtime.getTime() - starttime.getTime();
     
     }
+    
+    
+    // metod för att generera en score
     
     public void setScore(int rounds, long playTime){
     

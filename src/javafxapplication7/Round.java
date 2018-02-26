@@ -12,6 +12,9 @@ import javafx.scene.paint.Color;
  *
  * @author Elev
  */
+
+// en klass som generear en ny runda
+
 public class Round {
     
     private Color[] colorGuess = new Color[4];

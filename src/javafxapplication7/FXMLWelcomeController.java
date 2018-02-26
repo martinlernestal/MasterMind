@@ -42,6 +42,7 @@ public class FXMLWelcomeController implements Initializable {
         // TODO
     }    
     
+    // redirect till highscore sidan
     
     @FXML
     public void goToHighScore(ActionEvent event) throws IOException{
@@ -53,6 +54,9 @@ public class FXMLWelcomeController implements Initializable {
         goToHS.show();
     
     }
+    
+    
+    // redirect till att påbörja ett nytt spel
     
     @FXML
     public void goToNewGame(ActionEvent event) throws IOException{

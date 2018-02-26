@@ -19,6 +19,9 @@ import javafx.scene.shape.Circle;
  *
  * @author Elev
  */
+
+// en klass som konverterar allt så att det blir beans vänligt och kan användas av PropertyCellFactory metoden
+
 public class PropertyRenderedGame {
 
     private SimpleStringProperty user;
@@ -55,6 +58,8 @@ public class PropertyRenderedGame {
     
         return user.get();
     }
+    
+    // kollar vad datorns genererade färgkod är och generar det till string
     
     public String generateColor(String hexColor){
           

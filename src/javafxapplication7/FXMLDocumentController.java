@@ -112,19 +112,22 @@ public class FXMLDocumentController implements Initializable {
 
     // METODER SOM ANROPAS FRÅN REGISTERBEFOREGAME SIDAN >>>
     
+    // Den här metoden sätter antalet färger för spelomgången
+    
     public void setNumOfColors(Integer numOfCol){
-        // om detta skapas innan man startar spelet så är det ju inte så bra...
-        // fast allt måste ju kompileras innan så det kan väl inte varan ågora problem?
-        // evnetuellt uppstår det ett nullpointerexception här
-        //this.numOfColors = numOfCol;
+        
         this.numOfColors = numOfCol;
     }
+    
+    // Den här metoden sätter användarnamne för spelomgången
     
     public void setUserName(String userName){
     
         this.userName = userName;
     
     }
+    
+    // Den här metoden sätter om färgerna ska vara unika eller inte för spelomgången
     
     public void setColorConstraints(boolean condition){
     
@@ -134,6 +137,10 @@ public class FXMLDocumentController implements Initializable {
     
     //  <<< METODER SOM ANROPAS FRÅN EN REGISTERBEFOREGAME SIDAN >>>
 
+    
+    // Den här metoden genererar färgerna man kan drag-dropa i spelomgången
+    
+    
     private void genColorCircles(ArrayList<Color> colors){
         
         int index = 1;
@@ -144,7 +151,6 @@ public class FXMLDocumentController implements Initializable {
             
             colorCircles.getChildren().add(new Circle(20, currColor));
             //colorCircles.getChildren().get(index).setId("colorCircle");
-            System.out.println("genColorCircles runda:" + index);
             index++;
 
         }
@@ -165,36 +171,17 @@ public class FXMLDocumentController implements Initializable {
         });
         }
         
-        System.out.println(colorCircles.getChildren());
-        
-//        for(Node currCircle: colorCircles.getChildren()){
-//            currCircle.setId("colorCircle");
-//            System.out.println((Circle)currCircle.getProperties());
-//        }
-        
-        System.out.println("genColorCircles klar");
-        
-        // alla får samma id... 
-    
     }
+    
+    
+    
+    // Den här metoden kollar den senaste raden i spelet
     
     private boolean checkRow(ArrayList<Circle> circleList, ArrayList<Color> computerColorList){
         
         Collections.reverse(circleList);
         
         ArrayList<Color> copyOfCompColList = new ArrayList<>(computerColorList);
-        
-        // Man kan inte remove:a från en array man itererar över, man får set:a eller ändra
-        
-        // ALLT BLIR SPEGELVÄNT EFTERSOM MAN ITERERAR BAKLÄNGES GENOM GameGrid ELEMENTEN!
-        
-        // circleList som kommer in är en array av det man får från rundan
-        // computerColorlist är det som datorn har genererat
-        
-        // ARRAYINDEX OUT OF BOUND EXCEPTION!!!!!!!!
-        // lösning, glöm inte continue när man removat! sizen minskar för varje remove
-        
-        // DEN FÖRBRUKAR LIKSOM COLORSLIST!
 
         ArrayList <Circle> checkArray = new ArrayList<>();
         
@@ -206,10 +193,6 @@ public class FXMLDocumentController implements Initializable {
         
         boolean check = true;
         
-        // MÅSTE TA BORT FRÅN EXAKT INDEX PÅ BÅDA STÄLLEN DVS COLORLIST OCH CIRCLELIST
-        // SÅ MAN UNDVIKER DUBLETTER
-        // OM MAN TAR BORT PÅ SAMMA INDEX I ARRAYERNA SÅ BEHÅLLS JU ORDNINGEN  
-        
         int i = 0;
         
         for(Circle currCircle: circleList){
@@ -219,13 +202,8 @@ public class FXMLDocumentController implements Initializable {
             }
 
                 if(currCircle.getFill().equals(copyOfCompColList.get(i))){
-                    
 
-                    // så kan vi skapa en svart plupp med indexet som den hittades på
-                    //checkArray.put(new Circle(10.0, Color.BLACK), i);
-                    // då har vi en map för index och vilken färg
                     checkArray.add(new Circle(10.0, Color.BLACK));
-                    //copyOfCompColList.remove(i);
                     
                     circleList.set(i, new Circle(10.0, Color.CADETBLUE));
                     copyOfCompColList.set(i , Color.DARKGRAY);
@@ -254,29 +232,30 @@ public class FXMLDocumentController implements Initializable {
              }
            }
         }
+        
+        // TEST för att se vilka resultatfärger som genererats
 
-        for(Circle currCircle: checkArray){
-            
-            if(currCircle.getFill().equals(Color.BLACK)){
-                System.out.print("|BLACK|");
-            } else if(currCircle.getFill().equals(Color.WHITE)){
-                System.out.print("|WHITE|");
-            }
-        }
+//        for(Circle currCircle: checkArray){
+//            
+//            if(currCircle.getFill().equals(Color.BLACK)){
+//                System.out.print("|BLACK|");
+//            } else if(currCircle.getFill().equals(Color.WHITE)){
+//                System.out.print("|WHITE|");
+//            }
+//        }
 
         addResultsToRow(checkArray);
         i = 0;
         currResult = new Color[checkArray.size()];
         for(Circle currCircle: checkArray){
-            System.out.println("Circle color: " + currCircle.getFill());
             currResult[i] = (Color)currCircle.getFill();
             i++;
         }
-
-        // på första rundan får man inte gissningen, är det för att man bara läser i efterhand???
         
         return check;
     }
+    
+    // Den här metoden läser resultatraderna för senaste rundan
 
     private ArrayList<Color> readResultRow(FlowPane currPane){
     
@@ -290,6 +269,8 @@ public class FXMLDocumentController implements Initializable {
         return resultColors;
     
     }
+    
+    // Den här metoden läser in en viss runda och returnerar circlar i en list
 
     private ArrayList<Circle> readRow(int elementIndex){
  
@@ -301,16 +282,17 @@ public class FXMLDocumentController implements Initializable {
         
         return returnList;
     }
+    
+    // Den här metoden sätter en ny resultat row
  
     private void addResultsToRow(ArrayList<Circle> circleList){
-
-        // man skulle kunna göra ett deque eller liksom en stack av dom olika flowpane objekten
-        // och sen bara poppa av dom
         
         
         round.pop().getChildren().addAll(circleList);
         
     }
+    
+    // Den här metoden visar pekaren för ivlken omgång man är på
     
     private void showRoundPointer(){
     
@@ -319,9 +301,14 @@ public class FXMLDocumentController implements Initializable {
     
     }
     
+    // Den här metoden gömmer pekaren för senaste omgången
+    
     private void concealRoundPointer(){
         pointers.pop().setVisible(false);
     }
+    
+    
+    // Den här metoden visar färgerna som datorn har genereat
  
     private void showComputerRow(ArrayList<Color> computerGenRow){
     
@@ -337,6 +324,8 @@ public class FXMLDocumentController implements Initializable {
         questionMark4.setVisible(false);
     }
     
+    // Den här metoden läser in och genererar en ny runda
+    
     private void generateRound(){
     
         int i = 0;
@@ -347,12 +336,10 @@ public class FXMLDocumentController implements Initializable {
         }
                 
         Round currRound = new Round(currColors, currResult, new Date());
-                
-        if(currGame.setRound(new Round(currColors, currResult, new Date()))){
-            System.out.println("round was set");
-        }
     
     }
+    
+    // Den här metoden lägger till ett nytt spel till databasen
     
     private void addNewGame(){
     
@@ -389,9 +376,7 @@ public class FXMLDocumentController implements Initializable {
         
         // FÖR ATT TESTA ATT VI FÅR ALLT FRÅN ETT ÅTERSKAPAT GAME
         // DETTA FUNKAR MEN DET GER GAMET I DESCENDING ORDER:
-        
-        
-        
+
 //        Game testGame = null;
 //        MySQLConnect testConn = MySQLConnect.connect();
 //        try {
@@ -453,14 +438,10 @@ public class FXMLDocumentController implements Initializable {
         pointers.push(pointerThree);
         pointers.push(pointerTwo);
         pointers.push(pointerOne);
-        // behöver inte pointer till första eftersom man aldrig kommer till den
 
         
         // LÄGGER IN STARTDATE
 
-        // TODO: detta ska kunna styras från en annan sida
-        
-        // en till parameter... nämligen om det ska vara unikt eller inte
         
         colorList = new ColorList(numOfColors, uniqueColor);
 
@@ -471,28 +452,28 @@ public class FXMLDocumentController implements Initializable {
         currGame = new Game(startTime, userName, computerGenRow);
         
         
-        // RUNDANS KOD
+        // TEST RUNDANS KOD
         
-        System.out.println("Computers code for this game:");
-        for(Color currColor: computerGenRow){
-            if(currColor.equals(Color.BLACK)){
-                System.out.print("BLACK | ");
-            } else if(currColor.equals(Color.RED)){
-                System.out.print("RED | ");
-            } else if(currColor.equals(Color.BLUE)){
-                System.out.print("BLUE |");
-            } else if(currColor.equals(Color.YELLOW)){
-                System.out.print("YELLOW | ");
-            } else if(currColor.equals(Color.TURQUOISE)){
-                System.out.print("TURQUOISE | ");
-            } else if(currColor.equals(Color.GREEN)){
-                System.out.print("GREEN | ");
-            }  else if(currColor.equals(Color.WHITE)){
-                System.out.print("WHITE | ");
-            } else if(currColor.equals(Color.ORANGE)){
-                System.out.print("ORANGE | ");
-            }
-        }
+//        System.out.println("Computers code for this game:");
+//        for(Color currColor: computerGenRow){
+//            if(currColor.equals(Color.BLACK)){
+//                System.out.print("BLACK | ");
+//            } else if(currColor.equals(Color.RED)){
+//                System.out.print("RED | ");
+//            } else if(currColor.equals(Color.BLUE)){
+//                System.out.print("BLUE |");
+//            } else if(currColor.equals(Color.YELLOW)){
+//                System.out.print("YELLOW | ");
+//            } else if(currColor.equals(Color.TURQUOISE)){
+//                System.out.print("TURQUOISE | ");
+//            } else if(currColor.equals(Color.GREEN)){
+//                System.out.print("GREEN | ");
+//            }  else if(currColor.equals(Color.WHITE)){
+//                System.out.print("WHITE | ");
+//            } else if(currColor.equals(Color.ORANGE)){
+//                System.out.print("ORANGE | ");
+//            }
+//        }
         
         startButton.setVisible(false);
         
@@ -556,14 +537,14 @@ public class FXMLDocumentController implements Initializable {
         });
     }
 
+    // Den här metoden sätter upp så att ett dropfield kan acceptera ett drop
     @FXML
     private void handleDropField(DragEvent event) {
-        // kan man liksom ta emot en sträng, alltså en html färgkod?
-        // som kan färga det eventuella klotet...?
             event.acceptTransferModes(TransferMode.ANY);
-            //System.out.println(event.getDragboard().getContent(DataFormat.PLAIN_TEXT));
     }
 
+    // Den här metoden sätter färgen på cirklen man har droppat på
+    
     @FXML
     private void dropFieldOnDrop(DragEvent event) {
         
@@ -574,13 +555,13 @@ public class FXMLDocumentController implements Initializable {
         
         
         if(event.getDragboard().getContent(DataFormat.PLAIN_TEXT).toString().equals("colorCircle")){
-            System.out.println(tmpColorCircle.getFill());
             tmpDropField.setFill(tmpColorCircle.getFill());
         }
         
-        System.out.println(tmpDropField.getFill().equals(Color.BLACK));
         
     }
+    
+    // Den här metoden sätter byter view till higscore sidan
 
     @FXML
     public void changeScreenToHighScore(ActionEvent event) throws IOException{
@@ -601,21 +582,21 @@ public class FXMLDocumentController implements Initializable {
         window.show();
     }
     
+    // Den här metoden byter view till registreringen innan spelet, startar om spelet
+    
     @FXML
     public void startNewGame(ActionEvent event) throws IOException{
     
         Parent highScoreParent = FXMLLoader.load(getClass().getResource("RegisterBeforeGame.fxml"));
         Scene highScoreScene = new Scene(highScoreParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        
-        // get stage info
-        // detta måste göras till en metod för buttonen ska liksom bubbla
-        // ett event och sen ska man fånga därifrån
-        
+       
         window.setScene(highScoreScene);
         window.show();
     
     }
+    
+    // Den här metoden byter view till första sidan
     
     @FXML
     public void goBack(ActionEvent event) throws IOException{
@@ -624,14 +605,12 @@ public class FXMLDocumentController implements Initializable {
         Scene highScoreScene = new Scene(highScoreParent);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        // get stage info
-        // detta måste göras till en metod för buttonen ska liksom bubbla
-        // ett event och sen ska man fånga därifrån
-        
         window.setScene(highScoreScene);
         window.show();
     
     }
+    
+    // Den här metoden kommer upp antingen när vi har vunnit eller förlorat och promptar om man vill spela igen
     
     public void endOfGame(String message){
     
