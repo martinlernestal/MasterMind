@@ -58,7 +58,7 @@ public class MySQLConnect {
         ResultSet res = statement.executeQuery(query);
 
         while(res.next()){
-            returnAL.add(new PropertyRenderedGame(res.getString("userName"), res.getInt("score"), res.getTimestamp("endDate")));
+            returnAL.add(new PropertyRenderedGame(res.getString("userName"), res.getInt("score"), res.getTimestamp("endDate"), res.getString("color1"), res.getString("color2"), res.getString("color3"), res.getString("color4")));
         }
         statement.close();
         return returnAL;

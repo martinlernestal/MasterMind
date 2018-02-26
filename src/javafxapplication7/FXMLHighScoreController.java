@@ -29,6 +29,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -49,6 +51,8 @@ public class FXMLHighScoreController implements Initializable {
     private Button newGameButton;
     @FXML
     private Button backButton;
+    @FXML
+    private TableColumn<PropertyRenderedGame, String> computerColors;
     
     /**
      * Initializes the controller class.
@@ -61,6 +65,7 @@ public class FXMLHighScoreController implements Initializable {
         userName.setCellValueFactory(new PropertyValueFactory<>("user"));
         tableScore.setCellValueFactory(new PropertyValueFactory<>("score"));
         tableTime.setCellValueFactory(new PropertyValueFactory<>("time"));
+        computerColors.setCellValueFactory(new PropertyValueFactory("computerColors"));
         tableView.setItems(getGames());
 
     }
@@ -91,8 +96,6 @@ public class FXMLHighScoreController implements Initializable {
         window.show();
     
     }
-    
-    
 
     public ObservableList<PropertyRenderedGame> getGames(){
         
