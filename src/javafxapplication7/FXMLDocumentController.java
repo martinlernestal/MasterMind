@@ -287,7 +287,7 @@ public class FXMLDocumentController implements Initializable {
  
     private void addResultsToRow(ArrayList<Circle> circleList){
         
-        
+        Collections.reverse(circleList);
         round.pop().getChildren().addAll(circleList);
         
     }
@@ -301,7 +301,7 @@ public class FXMLDocumentController implements Initializable {
     
     }
     
-    // Den här metoden gömmer pekaren för senaste omgången
+    // Den här metoden gömmer pekaren för senaste omgånge
     
     private void concealRoundPointer(){
         pointers.pop().setVisible(false);
