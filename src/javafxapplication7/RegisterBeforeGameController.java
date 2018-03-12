@@ -69,14 +69,22 @@ public class RegisterBeforeGameController implements Initializable {
         getToGame.setLocation(getClass().getResource("FXMLDocument.fxml"));
         Parent getTG = getToGame.load();
         FXMLDocumentController controller = getToGame.getController();
-        controller.setNumOfColors(colorBox.getSelectionModel().getSelectedItem());
         controller.setUserName(userNameField.getText());
-        if(uniqueRegular.getSelectionModel().getSelectedItem().equals("Unique")){
-            controller.setColorConstraints(true);
+        if(colorBox.getSelectionModel().getSelectedItem() == null){
+            controller.setNumOfColors(6);
         } else {
-            controller.setColorConstraints(false);
+            controller.setNumOfColors(colorBox.getSelectionModel().getSelectedItem());
         }
-            
+        
+        try{
+             if(uniqueRegular.getSelectionModel().getSelectedItem().equals("Unique")){
+                controller.setColorConstraints(true);
+            } else {
+                controller.setColorConstraints(false);
+            }
+        }catch(NullPointerException npe){
+            controller.setColorConstraints(true);
+        }  
         Scene theGame = new Scene(getTG);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(theGame);
